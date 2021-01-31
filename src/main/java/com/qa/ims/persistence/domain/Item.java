@@ -31,5 +31,20 @@ public class Item {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	//toString & hashCode & Equals
+	
+	@Override
+	public String toString() {
+		return "item_id:" + item_id + " item name:" + item_name + " price:" + price;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((item_name == null) ? 0 : item_name.hashCode());
+		result = prime * result + ((item_id == null) ? 0 : item_id.hashCode());
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		return result;
+	}
+	//Equals
 }

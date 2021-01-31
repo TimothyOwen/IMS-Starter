@@ -40,5 +40,20 @@ public class Order {
 	public void setShipmentDate(String shipment_date) {
 		this.shipment_date = shipment_date;
 	}
-	//toString & hashCode & Equals
+	@Override
+	public String toString() {
+		return "order_id:" + order_id + " customer id:" + customer_id + " cost:" + cost + " shipment date:"+ shipment_date;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((order_id == null) ? 0 : order_id.hashCode());
+		result = prime * result + ((customer_id == null) ? 0 : customer_id.hashCode());
+		result = prime * result + ((cost == null) ? 0 : cost.hashCode());
+		result = prime * result + ((shipment_date == null) ? 0 : shipment_date.hashCode());
+		return result;
+	}
+	//Equals
 }

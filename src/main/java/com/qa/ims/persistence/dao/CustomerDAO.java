@@ -20,10 +20,10 @@ public class CustomerDAO implements Dao<Customer> {
 
 	@Override
 	public Customer modelFromResultSet(ResultSet resultSet) throws SQLException {
-		Long id = resultSet.getLong("customer_id");
+		Long customer_id = resultSet.getLong("customer_id");
 		String firstName = resultSet.getString("first_name");
 		String surname = resultSet.getString("surname");
-		return new Customer(id, firstName, surname);
+		return new Customer(customer_id, firstName, surname);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class CustomerDAO implements Dao<Customer> {
 	public Customer readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY customer_id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -64,7 +64,7 @@ public class CustomerDAO implements Dao<Customer> {
 	/**
 	 * Creates a customer in the database
 	 * 
-	 * @param customer - takes in a customer object. id will be ignored
+	 * @param customer - takes in a customer object. customer id will be ignored
 	 */
 	@Override
 	public Customer create(Customer customer) {
@@ -83,10 +83,10 @@ public class CustomerDAO implements Dao<Customer> {
 	}
 
 	@Override
-	public Customer read(Long id) {
+	public Customer read(Long customer_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM customers WHERE customer_id = ?");) {
-			statement.setLong(1, id);
+			statement.setLong(1, customer_id);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
 				return modelFromResultSet(resultSet);
@@ -101,7 +101,7 @@ public class CustomerDAO implements Dao<Customer> {
 	/**
 	 * Updates a customer in the database
 	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
+	 * @param customer - takes in a customer object, the customer id field will be used to
 	 *                 update that customer in the database
 	 * @return
 	 */
@@ -112,9 +112,9 @@ public class CustomerDAO implements Dao<Customer> {
 						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE customer_id = ?");) {
 			statement.setString(1, customer.getFirstName());
 			statement.setString(2, customer.getSurname());
-			statement.setLong(3, customer.getId());
+			statement.setLong(3, customer.getCustomerId());
 			statement.executeUpdate();
-			return read(customer.getId());
+			return read(customer.getCustomerId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -125,13 +125,13 @@ public class CustomerDAO implements Dao<Customer> {
 	/**
 	 * Deletes a customer in the database
 	 * 
-	 * @param id - id of the customer
+	 * @param customer id - customer id of the customer
 	 */
 	@Override
-	public int delete(long id) {
+	public int delete(long customer_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM customers WHERE customer_id = ?");) {
-			statement.setLong(1, id);
+			statement.setLong(1, customer_id);
 			return statement.executeUpdate();
 		} catch (Exception e) {
 			LOGGER.debug(e);
