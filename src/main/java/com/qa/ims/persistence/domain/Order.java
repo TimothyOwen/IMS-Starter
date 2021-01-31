@@ -42,7 +42,7 @@ public class Order {
 	}
 	@Override
 	public String toString() {
-		return "order_id:" + order_id + " customer id:" + customer_id + " cost:" + cost + " shipment date:"+ shipment_date;
+		return "Order ID: " + order_id + "  Customer ID: " + customer_id + "  Cost: " + cost + "  Shipment Date: "+ shipment_date;
 	}
 
 	@Override
