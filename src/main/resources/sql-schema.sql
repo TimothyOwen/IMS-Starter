@@ -11,6 +11,14 @@ CREATE TABLE IF NOT EXISTS `ims`.`customers` (
     PRIMARY KEY (`customer_id`)
 );
 
+CREATE TABLE IF NOT EXISTS `ims`.`items` (
+    `item_id` INT(11) NOT NULL AUTO_INCREMENT,
+    `item_name` VARCHAR(40) DEFAULT NULL,
+    `price` DECIMAL(7,2) DEFAULT NULL,
+    PRIMARY KEY (`item_id`)
+);
+
+/*
 CREATE TABLE IF NOT EXISTS `ims`.`orders` (
     `order_id` INT(11) NOT NULL AUTO_INCREMENT,
     `customer_id` INT(11) DEFAULT NULL,
@@ -27,13 +35,9 @@ CREATE TABLE IF NOT EXISTS `ims`.`orders_items` (
     PRIMARY KEY (`order_item_id`)
 );
 
-CREATE TABLE IF NOT EXISTS `ims`.`items` (
-    `item_id` INT(11) NOT NULL AUTO_INCREMENT,
-    `item_name` VARCHAR(40) DEFAULT NULL,
-    `price` DECIMAL(7,2) DEFAULT NULL,
-    PRIMARY KEY (`item_id`)
-);
+
 
 ALTER TABLE `ims`.`orders` ADD FOREIGN KEY (`customer_id`) REFERENCES `ims`.`customers` (`customer_id`); 
 ALTER TABLE `ims`.`orders_items` ADD FOREIGN KEY (`order_id`) REFERENCES `ims`.`orders` (`order_id`);
 ALTER TABLE `ims`.`orders_items` ADD FOREIGN KEY (`item_id`) REFERENCES `ims`.`items` (`item_id`);
+*/
