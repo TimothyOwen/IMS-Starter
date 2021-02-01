@@ -37,6 +37,8 @@ public class IMS {
 	public void imsSystem() {
 		LOGGER.info("Welcome to the Inventory Management System!");
 		DBUtils.connect();
+		DBUtils db = DBUtils.getInstance();
+		db.init("C:/Users/Work/JavaRepos/Projects/First Project/IMS/src/main/resources");
 
 		Domain domain = null;
 		do {
