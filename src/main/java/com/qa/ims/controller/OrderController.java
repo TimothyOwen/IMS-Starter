@@ -6,8 +6,12 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
 import com.qa.ims.persistence.dao.OrderItemDAO;
+import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.persistence.domain.OrderItem;
 import com.qa.ims.utils.Utils;
@@ -19,14 +23,18 @@ import com.qa.ims.utils.Utils;
 public class OrderController implements CrudController<Order> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
-
+	
+	private CustomerDAO customerDAO;
 	private OrderDAO orderDAO;
+	private ItemDAO itemDAO;
 	private OrderItemDAO orderitemDAO;
 	private Utils utils;
 
-	public OrderController(OrderDAO orderDAO, OrderItemDAO orderitemDAO, Utils utils) {
+	public OrderController(CustomerDAO customerDAO, OrderDAO orderDAO, ItemDAO itemDAO, OrderItemDAO orderitemDAO, Utils utils) {
 		super();
+		this.customerDAO = customerDAO;
 		this.orderDAO = orderDAO;
+		this.itemDAO = itemDAO;
 		this.orderitemDAO = orderitemDAO;
 		this.utils = utils;
 	}
@@ -50,39 +58,36 @@ public class OrderController implements CrudController<Order> {
 	public Order create() {
 		LOGGER.info("Please enter a customer ID");
 		Long customer_id = utils.getLong();
-		// Calculate cost by referencing item ID
-		LOGGER.info("Please enter a cost of order");
-		Double cost = utils.getDouble();
-		LOGGER.info("Please enter a shipment date");
-		String shipment_date = utils.getString();
-		//
-		///
-		//
-		//Add try block here, return to here if invalid input
+		Customer customer = customerDAO.read(customer_id);
+		LOGGER.info("Please enter a delivery date");
+		String shipment_date = utils.getDate();
 		Order latestOrder = orderDAO.readLatest();
 		Long next_order_id = (long) 1;
-		if(latestOrder!=null) {
-			next_order_id = latestOrder.getOrderId()+1;
+		if (latestOrder != null) {
+			next_order_id = latestOrder.getOrderId() + 1;
 		}
 		List<OrderItem> orderitems = new ArrayList<OrderItem>();
+		List<Item> items = new ArrayList<Item>();
 		String user_finished = "N";
+		Item item;
+		Double cost = (double) 0;
 		do {
 			LOGGER.info("Please enter an item ID");
 			Long item_id = utils.getLong();
 			LOGGER.info("Please enter how many items of these you want");
 			int item_quantity = Math.toIntExact(utils.getLong());
+			item = itemDAO.read(item_id);
+			cost += item.getPrice() * item_quantity;
 			orderitems.add(new OrderItem(next_order_id, item_id, item_quantity));
-			LOGGER.info("Have you finished ordering? (Y/N)");
+			items.add(item);
+			printTicket(customer, items, orderitems, cost, shipment_date);
+			LOGGER.info("Do you want to submit your order? (Y/N)");
 			user_finished = utils.getString();
 		} while (user_finished.equals("N"));
 		Order order = orderDAO.create(new Order(customer_id, cost, shipment_date));
-		//
-		for(OrderItem orderitem: orderitems) {
+		for (OrderItem orderitem : orderitems) {
 			orderitemDAO.create(orderitem);
 		}
-		//
-		///
-		//
 		LOGGER.info("Order created");
 		return order;
 	}
@@ -94,14 +99,30 @@ public class OrderController implements CrudController<Order> {
 	public Order update() {
 		LOGGER.info("Please enter the order_id of the order you would like to update");
 		Long order_id = utils.getLong();
-		LOGGER.info("Please enter a customer ID");
-		Long customer_id = utils.getLong();
-		LOGGER.info("Please enter a cost of order");
-		Double cost = utils.getDouble();
-		LOGGER.info("Please enter a shipment date");
-		String shipment_date = utils.getString();
-		Order order = orderDAO.update(new Order(order_id, customer_id, cost, shipment_date));
-		LOGGER.info("Order Updated");
+		Order orderFound = orderDAO.read(order_id);
+		Long customer_idFound = orderFound.getCustomerId();
+		Double costFound = orderFound.getCost();
+		String shipment_dateFound = orderFound.getShipmentDate();
+		List<OrderItem> orderitems = orderitemDAO.readOrderItems(order_id);
+		for(OrderItem o: orderitems) {LOGGER.info(o);}
+		Order order = null;
+		if(orderFound!=null) {
+			LOGGER.info("Please enter an updated customer ID");
+			Long customer_id = utils.getLong();
+			LOGGER.info("Please enter an updated cost of order (£)");
+			Double cost = utils.getDouble();
+			LOGGER.info("Please enter an updated shipment date (dd/mm/yyyy)");
+			String shipment_date = utils.getString();
+			order = orderDAO.update(new Order(order_id, customer_id, cost, shipment_date));
+			LOGGER.info("Order Updated");
+		}
+		else {
+			LOGGER.info("No order was found to update. Try Again (Y/N)");
+			if(utils.getString().equals("Y")) {
+				update();
+			}
+		}
+		
 		return order;
 	}
 
@@ -114,7 +135,36 @@ public class OrderController implements CrudController<Order> {
 	public int delete() {
 		LOGGER.info("Please enter the order_id of the order you would like to delete");
 		Long order_id = utils.getLong();
+		Order orderFound = orderDAO.read(order_id);
+		if(orderFound==null) {
+			LOGGER.info("No order was found to delete. Try Again (Y/N)");
+			if(utils.getString().equals("Y")) {
+				delete();
+			}
+			return 0;
+		}
 		return orderDAO.delete(order_id);
+	}
+	/**
+	 * Prints the contents and information of an order
+	 */
+	public void printTicket(Customer customer, List<Item> items, List<OrderItem> orderitems, Double cost, String shipment_date) {
+		LOGGER.info("");
+		LOGGER.info("______________");
+		LOGGER.info("Order: ");
+		LOGGER.info("______________");
+		LOGGER.info("Customer Name: "+customer.getFirstName()+" "+customer.getSurname());
+		LOGGER.info("______________");
+		LOGGER.info("");
+		for (int i = 0; i < items.size(); i++) {
+			LOGGER.info(items.get(i).getItemName() + " x" + orderitems.get(i).getItemQuantity());
+		}
+		LOGGER.info("Total: £ " + cost);
+		LOGGER.info("______________");
+		LOGGER.info("");
+		LOGGER.info("Delivery Date: "+shipment_date);
+		LOGGER.info("______________");
+		LOGGER.info("");
 	}
 
 }
