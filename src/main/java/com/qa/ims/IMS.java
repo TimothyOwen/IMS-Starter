@@ -45,12 +45,8 @@ public class IMS {
 		do {
 			LOGGER.info("Which entity would you like to use?");
 			Domain.printDomains();
-			LOGGER.info("");
-
 			domain = Domain.getDomain(utils);
-
 			domainAction(domain);
-
 		} while (domain != Domain.STOP);
 	}
 
