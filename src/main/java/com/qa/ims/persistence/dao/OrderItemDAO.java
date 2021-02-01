@@ -157,11 +157,9 @@ public class OrderItemDAO implements Dao<OrderItem> {
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders_items WHERE order_id = ?");) {
 			statement.setLong(1, order_id);
 			try (ResultSet resultSet = statement.executeQuery();) {
-				ResultSetMetaData resultSetData = resultSet.getMetaData();
 				while(resultSet.next()) {
-					for(int i=1; i<= resultSetData.getColumnCount(); i++) {
-						orderitems.add(modelFromResultSet(resultSet));
-					}
+					orderitems.add(modelFromResultSet(resultSet));
+					
 				};
 				return orderitems;
 			}
