@@ -115,6 +115,7 @@ public class OrderDAO implements Dao<Order> {
 			statement.setLong(1, order.getCustomerId());
 			statement.setDouble(2, order.getCost());
 			statement.setString(3, order.getShipmentDate());
+			statement.setLong(4, order.getOrderId());
 			statement.executeUpdate();
 			return read(order.getOrderId());
 		} catch (Exception e) {
