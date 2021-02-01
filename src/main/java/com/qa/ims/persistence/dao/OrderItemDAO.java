@@ -3,6 +3,7 @@ package com.qa.ims.persistence.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -83,7 +84,11 @@ public class OrderItemDAO implements Dao<OrderItem> {
 		}
 		return null;
 	}
-
+	/**
+	 * Reads a specific order_item 
+	 * 
+	 * @return
+	 */
 	@Override
 	public OrderItem read(Long order_item_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
@@ -140,6 +145,31 @@ public class OrderItemDAO implements Dao<OrderItem> {
 			LOGGER.error(e.getMessage());
 		}
 		return 0;
+	}
+	/**
+	 * Reads the order items from a specific order
+	 * 
+	 * @return
+	 */
+	public List<OrderItem> readOrderItems(Long order_id) {
+		List<OrderItem> orderitems = new ArrayList<>();
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders_items WHERE order_id = ?");) {
+			statement.setLong(1, order_id);
+			try (ResultSet resultSet = statement.executeQuery();) {
+				ResultSetMetaData resultSetData = resultSet.getMetaData();
+				while(resultSet.next()) {
+					for(int i=1; i<= resultSetData.getColumnCount(); i++) {
+						orderitems.add(modelFromResultSet(resultSet));
+					}
+				};
+				return orderitems;
+			}
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
 	}
 
 }
