@@ -43,7 +43,7 @@ public class ItemController implements CrudController<Item> {
 	 */
 	@Override
 	public Item create() {
-		LOGGER.info("Please enter a item name");
+		LOGGER.info("Please enter an item name");
 		String item_name = utils.getString();
 		LOGGER.info("Please enter a price");
 		Double price = utils.getDouble();
@@ -59,12 +59,23 @@ public class ItemController implements CrudController<Item> {
 	public Item update() {
 		LOGGER.info("Please enter the item_id of the item you would like to update");
 		Long item_id = utils.getLong();
-		LOGGER.info("Please enter a item name");
-		String item_name = utils.getString();
-		LOGGER.info("Please enter a price");
-		Double price = utils.getDouble();
-		Item item = itemDAO.update(new Item(item_id, item_name, price));
-		LOGGER.info("Item Updated");
+		Item itemFound = itemDAO.read(item_id);
+		Item item = null;
+		if(itemFound!=null) {
+			LOGGER.info("Item Found:  "+itemFound);
+			LOGGER.info("Please enter an updated item name");
+			String item_name = utils.getString();
+			LOGGER.info("Please enter an update price");
+			Double price = utils.getDouble();
+			item = itemDAO.update(new Item(item_id, item_name, price));
+			LOGGER.info("Item Updated");
+		}
+		else {
+			LOGGER.info("No item was found to update. Try Again (Y/N)");
+			if(utils.getString().equals("Y")) {
+				update();
+			}
+		}
 		return item;
 	}
 
@@ -77,6 +88,14 @@ public class ItemController implements CrudController<Item> {
 	public int delete() {
 		LOGGER.info("Please enter the item_id of the item you would like to delete");
 		Long item_id = utils.getLong();
+		Item itemFound = itemDAO.read(item_id);
+		if(itemFound==null) {
+			LOGGER.info("No item was found to delete. Try Again (Y/N)");
+			if(utils.getString().equals("Y")) {
+				delete();
+			}
+			return 0;
+		}
 		return itemDAO.delete(item_id);
 	}
 

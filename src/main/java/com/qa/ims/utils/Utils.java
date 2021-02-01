@@ -51,5 +51,24 @@ public class Utils {
 		} while (doubleInput == null);
 		return doubleInput;
 	}
+	
+	public String getDate() {
+		Long Day = (long) 0;
+		Long Month = (long) 0;
+		Long Year = (long) 0;
+		do {
+			try {
+				LOGGER.info("Please enter the day (dd)");
+				Day = getLong();
+				LOGGER.info("Please enter the month (mm)");
+				Month = getLong();
+				LOGGER.info("Please enter the year (yy)");
+				Year = getLong();
+			} catch (NumberFormatException nfe) {
+				LOGGER.info("Invalid input - Please enter again.");
+			}
+		} while (Day == 0 || Month == 0 || Year == 0 || (Day>31&&Day<1) || (Month>12&&Month<1) || (Year<21));
+		return String.valueOf(Day)+"/"+String.valueOf(Month)+"/"+String.valueOf(Year);
+	}
 
 }

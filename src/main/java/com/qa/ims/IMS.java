@@ -11,6 +11,7 @@ import com.qa.ims.controller.OrderController;
 import com.qa.ims.persistence.dao.CustomerDAO;
 import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
+import com.qa.ims.persistence.dao.OrderItemDAO;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.utils.DBUtils;
 import com.qa.ims.utils.Utils;
@@ -29,19 +30,22 @@ public class IMS {
 		final CustomerDAO custDAO = new CustomerDAO();
 		final ItemDAO itemDAO = new ItemDAO();
 		final OrderDAO orderDAO = new OrderDAO();
+		final OrderItemDAO orderitemDAO = new OrderItemDAO();
 		this.customers = new CustomerController(custDAO, utils);
 		this.items = new ItemController(itemDAO, utils);
-		this.orders= new OrderController(orderDAO, utils);
+		this.orders = new OrderController(custDAO, orderDAO, itemDAO, orderitemDAO, utils);
 	}
 
 	public void imsSystem() {
 		LOGGER.info("Welcome to the Inventory Management System!");
 		DBUtils.connect();
-
+		DBUtils db = DBUtils.getInstance();
+		db.init("C:/Users/Work/JavaRepos/Projects/First Project/IMS/src/main/resources/sql-schema.sql");
 		Domain domain = null;
 		do {
 			LOGGER.info("Which entity would you like to use?");
 			Domain.printDomains();
+			LOGGER.info("");
 
 			domain = Domain.getDomain(utils);
 
@@ -60,7 +64,6 @@ public class IMS {
 				active = this.customers;
 				break;
 			case ITEM:
-				//TASK: add active here
 				active = this.items;
 				break;
 			case ORDER:
@@ -74,7 +77,7 @@ public class IMS {
 
 			LOGGER.info(() -> "What would you like to do with " + domain.name().toLowerCase() + ":");
 
-			Action.printActions();
+			Action.printActions(domain);
 			Action action = Action.getAction(utils);
 
 			if (action == Action.RETURN) {
