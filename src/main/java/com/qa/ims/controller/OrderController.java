@@ -56,16 +56,22 @@ public class OrderController implements CrudController<Order> {
 	 */
 	@Override
 	public Order create() {
-		LOGGER.info("Please enter a customer ID");
-		Long customer_id = utils.getLong();
-		Customer customer = customerDAO.read(customer_id);
-		LOGGER.info("Please enter a delivery date");
-		String shipment_date = utils.getDate();
 		Order latestOrder = orderDAO.readLatest();
 		Long next_order_id = (long) 1;
 		if (latestOrder != null) {
 			next_order_id = latestOrder.getOrderId() + 1;
 		}
+		Order order = create(next_order_id);
+		LOGGER.info(order);
+		return order;
+	}
+	//Overload
+	public Order create(Long order_id) {
+		LOGGER.info("Please enter a customer ID");
+		Long customer_id = utils.getLong();
+		Customer customer = customerDAO.read(customer_id);
+		LOGGER.info("Please enter a delivery date");
+		String shipment_date = utils.getDate();
 		List<OrderItem> orderitems = new ArrayList<OrderItem>();
 		List<Item> items = new ArrayList<Item>();
 		String user_finished = "N";
@@ -78,20 +84,27 @@ public class OrderController implements CrudController<Order> {
 			int item_quantity = Math.toIntExact(utils.getLong());
 			item = itemDAO.read(item_id);
 			cost += item.getPrice() * item_quantity;
-			orderitems.add(new OrderItem(next_order_id, item_id, item_quantity));
+			orderitems.add(new OrderItem(order_id, item_id, item_quantity));
 			items.add(item);
 			printTicket(customer, items, orderitems, cost, shipment_date);
 			LOGGER.info("Do you want to submit your order? (Y/N)");
 			user_finished = utils.getString();
 		} while (user_finished.equals("N"));
-		Order order = orderDAO.create(new Order(customer_id, cost, shipment_date));
+		Order order;
+		if(orderDAO.read(order_id) == null) {
+			order = new Order(customer_id, cost, shipment_date);
+			order = orderDAO.create(order);
+		}else {
+			order = new Order(order_id, customer_id, cost, shipment_date);
+		}
 		for (OrderItem orderitem : orderitems) {
 			orderitemDAO.create(orderitem);
 		}
 		LOGGER.info("Order created");
+		LOGGER.info(order);
 		return order;
 	}
-
+	
 	/**
 	 * Updates an existing order by taking in user input
 	 */
@@ -100,29 +113,25 @@ public class OrderController implements CrudController<Order> {
 		LOGGER.info("Please enter the order_id of the order you would like to update");
 		Long order_id = utils.getLong();
 		Order orderFound = orderDAO.read(order_id);
-		Long customer_idFound = orderFound.getCustomerId();
-		Double costFound = orderFound.getCost();
-		String shipment_dateFound = orderFound.getShipmentDate();
-		List<OrderItem> orderitems = orderitemDAO.readOrderItems(order_id);
-		for(OrderItem o: orderitems) {LOGGER.info(o);}
-		Order order = null;
-		if(orderFound!=null) {
-			LOGGER.info("Please enter an updated customer ID");
-			Long customer_id = utils.getLong();
-			LOGGER.info("Please enter an updated cost of order (£)");
-			Double cost = utils.getDouble();
-			LOGGER.info("Please enter an updated shipment date (dd/mm/yyyy)");
-			String shipment_date = utils.getString();
-			order = orderDAO.update(new Order(order_id, customer_id, cost, shipment_date));
-			LOGGER.info("Order Updated");
-		}
-		else {
+		if(orderFound == null) {
 			LOGGER.info("No order was found to update. Try Again (Y/N)");
 			if(utils.getString().equals("Y")) {
 				update();
 			}
 		}
-		
+		Long customer_idFound = orderFound.getCustomerId();
+		Customer customer = customerDAO.read(customer_idFound);
+		List<OrderItem> orderitems = orderitemDAO.readOrderItems(order_id);
+		List<Item> items = new ArrayList<Item>();
+		for(OrderItem orderitem: orderitems) {
+			orderitemDAO.delete(orderitem.getOrderItemId());
+			items.add(itemDAO.read(orderitem.getItemId()));
+		};
+		Double costFound = orderFound.getCost();
+		String shipment_dateFound = orderFound.getShipmentDate();
+		printTicket(customer, items, orderitems, costFound, shipment_dateFound);
+		Order order = orderDAO.update(create(order_id));
+		LOGGER.info("Order Updated");
 		return order;
 	}
 
