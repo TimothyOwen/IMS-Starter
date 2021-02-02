@@ -62,6 +62,23 @@ public class OrderDAO implements Dao<Order> {
 		}
 		return null;
 	}
+	public List<Order> readCustomers(Long customer_id) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM orders WHERE customer_id = ?");) {
+			statement.setLong(1, customer_id);
+			ResultSet resultSet = statement.executeQuery();
+			List<Order> orders = new ArrayList<>();
+			while (resultSet.next()) {
+				orders.add(modelFromResultSet(resultSet));
+			}
+			return orders;
+		} catch (SQLException e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return new ArrayList<>();
+	}
 
 	/**
 	 * Creates a order in the database
