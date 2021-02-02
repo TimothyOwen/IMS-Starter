@@ -32,9 +32,12 @@ public class CustomerController implements CrudController<Customer> {
 	@Override
 	public List<Customer> readAll() {
 		List<Customer> customers = customerDAO.readAll();
+		LOGGER.info("Customers: ");
+		Utils.printDottedLine();
 		for (Customer customer : customers) {
 			LOGGER.info(customer);
 		}
+		Utils.printLine();
 		return customers;
 	}
 
@@ -48,7 +51,10 @@ public class CustomerController implements CrudController<Customer> {
 		LOGGER.info("Please enter a surname");
 		String surname = utils.getString();
 		Customer customer = customerDAO.create(new Customer(firstName, surname));
-		LOGGER.info("Customer created");
+		LOGGER.info("Customer Created: ");
+		Utils.printDottedLine();
+		LOGGER.info(customer);
+		Utils.printLine();
 		return customer;
 	}
 
@@ -59,12 +65,26 @@ public class CustomerController implements CrudController<Customer> {
 	public Customer update() {
 		LOGGER.info("Please enter the customer id of the customer you would like to update");
 		Long customer_id = utils.getLong();
-		LOGGER.info("Please enter a first name");
-		String firstName = utils.getString();
-		LOGGER.info("Please enter a surname");
-		String surname = utils.getString();
-		Customer customer = customerDAO.update(new Customer(customer_id, firstName, surname));
-		LOGGER.info("Customer Updated");
+		Customer customerFound = customerDAO.read(customer_id);
+		Customer customer = null;
+		if(customerFound!=null) {
+			LOGGER.info("Customer Found:  "+customerFound);
+			LOGGER.info("Please enter an updated first name");
+			String firstName = utils.getString();
+			LOGGER.info("Please enter an updated surname");
+			String surname = utils.getString();
+			customer = customerDAO.update(new Customer(customer_id, firstName, surname));
+		}
+		else { 
+			LOGGER.info("No customer was found to update. Try Again (Y/N)");
+			if(utils.getString().equals("Y")) {
+				update();
+			}
+		}
+		LOGGER.info("Customer Updated: ");
+		Utils.printDottedLine();
+		LOGGER.info(customer);
+		Utils.printLine();
 		return customer;
 	}
 
@@ -77,6 +97,17 @@ public class CustomerController implements CrudController<Customer> {
 	public int delete() {
 		LOGGER.info("Please enter the customer id of the customer you would like to delete");
 		Long customer_id = utils.getLong();
+		Customer customerFound = customerDAO.read(customer_id);
+		if(customerFound==null) {
+			LOGGER.info("No customer was found to delete. Try Again (Y/N)");
+			if(utils.getString().equals("Y")) {
+				delete();
+			}
+			return 0;
+		}
+		LOGGER.info("Customer Deleted");
+		Utils.printDottedLine();
+		Utils.printLine();
 		return customerDAO.delete(customer_id);
 	}
 

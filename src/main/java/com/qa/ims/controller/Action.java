@@ -3,6 +3,7 @@ package com.qa.ims.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.utils.Utils;
 
 /**
@@ -26,6 +27,9 @@ public enum Action {
 	/**
 	 * Describes the action
 	 */
+	public String getName() {
+		return this.name();
+	}
 	public String getDescription() {
 		return this.name() + ": " + this.description;
 	}
@@ -33,9 +37,14 @@ public enum Action {
 	/**
 	 * Prints out all possible actions
 	 */
-	public static void printActions() {
+	public static void printActions(Domain domain) {
 		for (Action action : Action.values()) {
-			LOGGER.info(action.getDescription());
+			String actionString = action.getName();
+			if(actionString.equals("RETURN")) {
+				LOGGER.info("("+actionString+")");
+			}else {
+				LOGGER.info("("+actionString+") a "+domain.toString().toLowerCase());
+			}
 		}
 	}
 
