@@ -1,5 +1,6 @@
 package com.qa.ims.controller;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,9 +33,12 @@ public class ItemController implements CrudController<Item> {
 	@Override
 	public List<Item> readAll() {
 		List<Item> items = itemDAO.readAll();
+		LOGGER.info("Items: ");
+		Utils.printDottedLine();
 		for (Item item : items) {
 			LOGGER.info(item);
 		}
+		Utils.printLine();
 		return items;
 	}
 
@@ -43,12 +47,17 @@ public class ItemController implements CrudController<Item> {
 	 */
 	@Override
 	public Item create() {
+		DecimalFormat df = new DecimalFormat("#.##");
 		LOGGER.info("Please enter an item name");
 		String item_name = utils.getString();
 		LOGGER.info("Please enter a price");
 		Double price = utils.getDouble();
+		price = Double.valueOf(df.format(price));
 		Item item = itemDAO.create(new Item(item_name, price));
-		LOGGER.info("Item created");
+		LOGGER.info("Item Created");
+		Utils.printDottedLine();
+		LOGGER.info(item);
+		Utils.printLine();
 		return item;
 	}
 
@@ -61,14 +70,13 @@ public class ItemController implements CrudController<Item> {
 		Long item_id = utils.getLong();
 		Item itemFound = itemDAO.read(item_id);
 		Item item = null;
-		if(itemFound!=null) {
+		if(itemFound != null) {
 			LOGGER.info("Item Found:  "+itemFound);
 			LOGGER.info("Please enter an updated item name");
 			String item_name = utils.getString();
 			LOGGER.info("Please enter an update price");
 			Double price = utils.getDouble();
 			item = itemDAO.update(new Item(item_id, item_name, price));
-			LOGGER.info("Item Updated");
 		}
 		else {
 			LOGGER.info("No item was found to update. Try Again (Y/N)");
@@ -76,6 +84,10 @@ public class ItemController implements CrudController<Item> {
 				update();
 			}
 		}
+		LOGGER.info("Item Updated");
+		Utils.printDottedLine();
+		LOGGER.info(item);
+		Utils.printLine();
 		return item;
 	}
 
@@ -96,6 +108,9 @@ public class ItemController implements CrudController<Item> {
 			}
 			return 0;
 		}
+		LOGGER.info("Item Deleted");
+		Utils.printDottedLine();
+		Utils.printLine();
 		return itemDAO.delete(item_id);
 	}
 

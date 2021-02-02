@@ -1,5 +1,6 @@
 package com.qa.ims.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +46,12 @@ public class OrderController implements CrudController<Order> {
 	@Override
 	public List<Order> readAll() {
 		List<Order> orders = orderDAO.readAll();
+		LOGGER.info("Orders: ");
+		Utils.printDottedLine();
 		for (Order order : orders) {
 			LOGGER.info(order);
 		}
+		Utils.printLine();
 		return orders;
 	}
 
@@ -56,17 +60,21 @@ public class OrderController implements CrudController<Order> {
 	 */
 	@Override
 	public Order create() {
-		Order latestOrder = orderDAO.readLatest();
 		Long next_order_id = (long) 1;
+		Order latestOrder = orderDAO.readLatest();
 		if (latestOrder != null) {
 			next_order_id = latestOrder.getOrderId() + 1;
 		}
 		Order order = create(next_order_id);
+		LOGGER.info("Order Created:");
+		Utils.printDottedLine();
 		LOGGER.info(order);
+		Utils.printLine();
 		return order;
 	}
 	//Overload
 	public Order create(Long order_id) {
+		DecimalFormat df = new DecimalFormat("#.##");
 		LOGGER.info("Please enter a customer ID");
 		Long customer_id = utils.getLong();
 		Customer customer = customerDAO.read(customer_id);
@@ -84,9 +92,10 @@ public class OrderController implements CrudController<Order> {
 			int item_quantity = Math.toIntExact(utils.getLong());
 			item = itemDAO.read(item_id);
 			cost += item.getPrice() * item_quantity;
+			cost = Double.valueOf(df.format(cost));
 			orderitems.add(new OrderItem(order_id, item_id, item_quantity));
 			items.add(item);
-			printTicket(customer, items, orderitems, cost, shipment_date);
+			printTicket(order_id, customer, items, orderitems, cost, shipment_date);
 			LOGGER.info("Do you want to submit your order? (Y/N)");
 			user_finished = utils.getString();
 		} while (user_finished.equals("N"));
@@ -100,8 +109,6 @@ public class OrderController implements CrudController<Order> {
 		for (OrderItem orderitem : orderitems) {
 			orderitemDAO.create(orderitem);
 		}
-		LOGGER.info("Order created");
-		LOGGER.info(order);
 		return order;
 	}
 	
@@ -114,7 +121,7 @@ public class OrderController implements CrudController<Order> {
 		Long order_id = utils.getLong();
 		Order orderFound = orderDAO.read(order_id);
 		if(orderFound == null) {
-			LOGGER.info("No order was found to update. Try Again (Y/N)");
+			LOGGER.info("No order was found to update. Try Again (Y/N)?");
 			if(utils.getString().equals("Y")) {
 				update();
 			}
@@ -129,9 +136,12 @@ public class OrderController implements CrudController<Order> {
 		};
 		Double costFound = orderFound.getCost();
 		String shipment_dateFound = orderFound.getShipmentDate();
-		printTicket(customer, items, orderitems, costFound, shipment_dateFound);
+		printTicket(order_id, customer, items, orderitems, costFound, shipment_dateFound);
 		Order order = orderDAO.update(create(order_id));
-		LOGGER.info("Order Updated");
+		LOGGER.info("Order Updated: ");
+		Utils.printDottedLine();
+		LOGGER.info(order);
+		Utils.printLine();
 		return order;
 	}
 
@@ -152,28 +162,27 @@ public class OrderController implements CrudController<Order> {
 			}
 			return 0;
 		}
+		LOGGER.info("Order Deleted");
+		Utils.printDottedLine();
+		Utils.printLine();
 		return orderDAO.delete(order_id);
 	}
 	/**
 	 * Prints the contents and information of an order
 	 */
-	public void printTicket(Customer customer, List<Item> items, List<OrderItem> orderitems, Double cost, String shipment_date) {
-		LOGGER.info("");
-		LOGGER.info("______________");
-		LOGGER.info("Order: ");
-		LOGGER.info("______________");
+	public void printTicket(Long order_id, Customer customer, List<Item> items, List<OrderItem> orderitems, Double cost, String shipment_date) {
+		Utils.printDottedLine();
+		LOGGER.info("Order ID: "+order_id);
+		Utils.printDottedLine();
 		LOGGER.info("Customer Name: "+customer.getFirstName()+" "+customer.getSurname());
-		LOGGER.info("______________");
-		LOGGER.info("");
+		Utils.printDottedLine();
 		for (int i = 0; i < items.size(); i++) {
 			LOGGER.info(items.get(i).getItemName() + " x" + orderitems.get(i).getItemQuantity());
 		}
 		LOGGER.info("Total: £ " + cost);
-		LOGGER.info("______________");
-		LOGGER.info("");
+		Utils.printDottedLine();
 		LOGGER.info("Delivery Date: "+shipment_date);
-		LOGGER.info("______________");
-		LOGGER.info("");
+		Utils.printDottedLine();
 	}
 
 }

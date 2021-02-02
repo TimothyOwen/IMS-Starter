@@ -35,7 +35,9 @@ public class Utils {
 	}
 
 	public String getString() {
-		return scanner.nextLine();
+		String stringInput = scanner.nextLine();
+		printLine();
+		return stringInput;
 	}
 
 	public Double getDouble() {
@@ -65,15 +67,18 @@ public class Utils {
 				LOGGER.info("Please enter the year (yy)");
 				Year = getLong();
 			} catch (NumberFormatException nfe) {
-				LOGGER.info("Invalid input - Please enter again.");
+				LOGGER.info("Invalid input - Please enter again");
 			}
 		} while (Day == 0 || Month == 0 || Year == 0 || (Day>31&&Day<1) || (Month>12&&Month<1) || (Year<21));
 		return String.valueOf(Day)+"/"+String.valueOf(Month)+"/"+String.valueOf(Year);
 	}
 	
 	public static void printLine() {
+		LOGGER.info("______________________________");
 		LOGGER.info("");
-		LOGGER.info("______________");
+	}
+	public static void printDottedLine() {
+		LOGGER.info("--------------");
 		LOGGER.info("");
 	}
 

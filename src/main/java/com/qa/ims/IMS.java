@@ -38,12 +38,14 @@ public class IMS {
 
 	public void imsSystem() {
 		LOGGER.info("Welcome to the Inventory Management System!");
+		Utils.printLine();
 		DBUtils.connect();
 		DBUtils db = DBUtils.getInstance();
 		db.init("C:/Users/Work/JavaRepos/Projects/First Project/IMS/src/main/resources/sql-schema.sql");
 		Domain domain = null;
 		do {
 			LOGGER.info("Which entity would you like to use?");
+			Utils.printLine();
 			Domain.printDomains();
 			domain = Domain.getDomain(utils);
 			domainAction(domain);
@@ -72,7 +74,7 @@ public class IMS {
 			}
 
 			LOGGER.info(() -> "What would you like to do with " + domain.name().toLowerCase() + ":");
-
+			Utils.printLine();
 			Action.printActions(domain);
 			Action action = Action.getAction(utils);
 
