@@ -38,7 +38,7 @@ public class IMS {
 
 	public void imsSystem() {
 		LOGGER.info("Welcome to the Inventory Management System!");
-		Utils.printLine();
+		Utils.printDottedLine();
 		DBUtils.connect();
 		DBUtils db = DBUtils.getInstance();
 		db.init("C:/Users/Work/JavaRepos/Projects/First Project/IMS/src/main/resources/sql-schema.sql");
