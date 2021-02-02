@@ -7,19 +7,12 @@ import com.qa.ims.utils.Utils;
 
 public enum Domain {
 
-	CUSTOMER("Information about customers"), ITEM("Information about items"), 
-	ORDER("Purchase items"), STOP("To close the application");
+	CUSTOMER, ITEM, ORDER, RETURN;
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private String description;
-
-	private Domain(String description) {
-		this.description = description;
-	}
-
 	public String getDescription() {
-		return this.name() + ": " + this.description;
+		return this.name();
 	}
 
 	public static void printDomains() {
