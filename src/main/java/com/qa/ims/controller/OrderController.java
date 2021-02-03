@@ -15,6 +15,7 @@ import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.persistence.domain.OrderItem;
+import com.qa.ims.utils.PrintUtils;
 import com.qa.ims.utils.Utils;
 
 /**
@@ -29,7 +30,9 @@ public class OrderController implements CrudController<Order> {
 	private OrderDAO orderDAO;
 	private ItemDAO itemDAO;
 	private OrderItemDAO orderitemDAO;
+	private OrderItemSubController orderitemsubcontroller;
 	private Utils utils;
+	private PrintUtils printutils;
 
 	public OrderController(CustomerDAO customerDAO, OrderDAO orderDAO, ItemDAO itemDAO, OrderItemDAO orderitemDAO, Utils utils) {
 		super();
@@ -37,7 +40,9 @@ public class OrderController implements CrudController<Order> {
 		this.orderDAO = orderDAO;
 		this.itemDAO = itemDAO;
 		this.orderitemDAO = orderitemDAO;
+		this.orderitemsubcontroller = new OrderItemSubController(itemDAO, orderitemDAO);
 		this.utils = utils;
+		this.printutils = new PrintUtils();
 	}
 
 	/**
@@ -47,11 +52,11 @@ public class OrderController implements CrudController<Order> {
 	public List<Order> readAll() {
 		List<Order> orders = orderDAO.readAll();
 		LOGGER.info("Orders: ");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		for (Order order : orders) {
 			LOGGER.info(order);
 		}
-		Utils.printLine();
+		PrintUtils.printLine();
 		return orders;
 	}
 
@@ -65,15 +70,15 @@ public class OrderController implements CrudController<Order> {
 		if (latestOrder != null) {
 			next_order_id = latestOrder.getOrderId() + 1;
 		}
-		Order order = create(next_order_id);
+		Order order = createOrderItems(next_order_id);
 		LOGGER.info("Order Created:");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		LOGGER.info(order);
-		Utils.printLine();
+		PrintUtils.printLine();
 		return order;
 	}
-	//Overload
-	public Order create(Long order_id) {
+	//Overload used for create and update methods
+	public Order createOrderItems(Long order_id) {
 		DecimalFormat df = new DecimalFormat("#.##");
 		Customer customer = getCustomerByCustomerId();
 		Long customer_id = customer.getCustomerId();
@@ -91,10 +96,10 @@ public class OrderController implements CrudController<Order> {
 			cost = Double.valueOf(df.format(cost));
 			orderitems.add(new OrderItem(order_id, item_id, item_quantity));
 			items.add(item);
-			printTicket(order_id, customer, items, orderitems, cost, shipment_date);
+			printutils.printTicket(order_id, customer, items, orderitems, cost, shipment_date);
 			LOGGER.info("Do you want to submit your order? (Y/N)");
 			user_finished = utils.getString();
-		} while (user_finished.equals("N"));
+		} while (!user_finished.equals("Y"));
 		Order order;
 		if(orderDAO.read(order_id) == null) {
 			order = new Order(customer_id, cost, shipment_date);
@@ -102,9 +107,7 @@ public class OrderController implements CrudController<Order> {
 		}else {
 			order = new Order(order_id, customer_id, cost, shipment_date);
 		}
-		for (OrderItem orderitem : orderitems) {
-			orderitemDAO.create(orderitem);
-		}
+		orderitemsubcontroller.createOrderItems(orderitems);
 		return order;
 	}
 	/**
@@ -113,11 +116,11 @@ public class OrderController implements CrudController<Order> {
 	public List<Order> read(Long customer_id) {
 		List<Order> orders = orderDAO.readCustomers(customer_id);
 		LOGGER.info("Orders: ");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		for (Order order : orders) {
 			LOGGER.info(order);
 		}
-		Utils.printLine();
+		PrintUtils.printLine();
 		return orders;
 	}
 	
@@ -126,35 +129,29 @@ public class OrderController implements CrudController<Order> {
 	 */
 	@Override
 	public Order update() {
-		Long order_id = null;
 		Order orderFound = null;
-		String tryAgain = "Y";
+		String tryAgain = "N";
 		do {
 			orderFound = getOrderByOrderId();
-			do {
+			while(orderFound == null) {
 				LOGGER.info("No order was found to update. Try Again (Y/N)?");
 				tryAgain = utils.getString();
-			} while((!tryAgain.equalsIgnoreCase("Y")) && (!tryAgain.equalsIgnoreCase("N")));
-			if(tryAgain.equalsIgnoreCase("N")){
-				return null;
+				if(tryAgain.equalsIgnoreCase("N")){
+					return null;
+				}
+				orderFound = getOrderByOrderId();		
 			}
-		} while(orderFound == null && (!tryAgain.equalsIgnoreCase("N")));
+		} while(!tryAgain.equalsIgnoreCase("N"));
+		Long order_id = orderFound.getOrderId();	
 		Long customer_idFound = orderFound.getCustomerId();
 		Customer customer = customerDAO.read(customer_idFound);
 		List<OrderItem> orderitems = orderitemDAO.readOrderItems(order_id);
-		List<Item> items = new ArrayList<Item>();
-		for(OrderItem orderitem: orderitems) {
-			orderitemDAO.delete(orderitem.getOrderItemId());
-			items.add(itemDAO.read(orderitem.getItemId()));
-		};
+		List<Item> items = orderitemsubcontroller.trackAndDeleteOrderItems(orderitems, order_id);
 		Double costFound = orderFound.getCost();
 		String shipment_dateFound = orderFound.getShipmentDate();
-		printTicket(order_id, customer, items, orderitems, costFound, shipment_dateFound);
-		Order order = orderDAO.update(create(order_id));
-		LOGGER.info("Order Updated: ");
-		Utils.printDottedLine();
-		LOGGER.info(order);
-		Utils.printLine();
+		printutils.printTicket(order_id, customer, items, orderitems, costFound, shipment_dateFound);
+		Order order = orderDAO.update(createOrderItems(order_id));
+		printutils.printUpdate(order);
 		return order;
 	}
 
@@ -174,10 +171,10 @@ public class OrderController implements CrudController<Order> {
 			return 0;
 		}
 		Long order_id = orderFound.getOrderId();
-		orderitemDAO.deleteByOrder(order_id);
+		orderitemsubcontroller.deleteOrderItems(order_id);
 		LOGGER.info("Order Deleted:");
-		Utils.printDottedLine();
-		Utils.printLine();
+		PrintUtils.printDottedLine();
+		PrintUtils.printLine();
 		return orderDAO.delete(order_id);
 	}
 	/**
@@ -211,22 +208,4 @@ public class OrderController implements CrudController<Order> {
 		LOGGER.info("Please enter an item quantity");
 		return utils.getLong();
 	}
-	/**
-	 * Prints the contents and information of an order
-	 */
-	public void printTicket(Long order_id, Customer customer, List<Item> items, List<OrderItem> orderitems, Double cost, String shipment_date) {
-		Utils.printDottedLine();
-		LOGGER.info("Order ID: "+order_id);
-		Utils.printDottedLine();
-		LOGGER.info("Customer Name: "+customer.getFirstName()+" "+customer.getSurname());
-		Utils.printDottedLine();
-		for (int i = 0; i < items.size(); i++) {
-			LOGGER.info(items.get(i).getItemName() + " x" + orderitems.get(i).getItemQuantity());
-		}
-		LOGGER.info("Total: £ " + cost);
-		Utils.printDottedLine();
-		LOGGER.info("Delivery Date: "+shipment_date);
-		Utils.printDottedLine();
-	}
-
 }
