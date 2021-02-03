@@ -145,6 +145,17 @@ public class OrderItemDAO implements Dao<OrderItem> {
 		}
 		return 0;
 	}
+	public int deleteByOrder(long order_id) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM orders_items WHERE order_id = ?");) {
+			statement.setLong(1, order_id);
+			return statement.executeUpdate();
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return 0;
+	}
 	/**
 	 * Reads the order items from a specific order
 	 * 

@@ -111,6 +111,19 @@ public class OrderController implements CrudController<Order> {
 		}
 		return order;
 	}
+	/**
+	 * Reads an existing order by taking in user input
+	 */
+	public List<Order> read(Long customer_id) {
+		List<Order> orders = orderDAO.readCustomers(customer_id);
+		LOGGER.info("Orders: ");
+		Utils.printDottedLine();
+		for (Order order : orders) {
+			LOGGER.info(order);
+		}
+		Utils.printLine();
+		return orders;
+	}
 	
 	/**
 	 * Updates an existing order by taking in user input
@@ -154,6 +167,7 @@ public class OrderController implements CrudController<Order> {
 	public int delete() {
 		LOGGER.info("Please enter the order_id of the order you would like to delete");
 		Long order_id = utils.getLong();
+		orderitemDAO.deleteByOrder(order_id);
 		Order orderFound = orderDAO.read(order_id);
 		if(orderFound==null) {
 			LOGGER.info("No order was found to delete. Try Again (Y/N)");
