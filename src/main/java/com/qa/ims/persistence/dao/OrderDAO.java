@@ -115,6 +115,7 @@ public class OrderDAO implements Dao<Order> {
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
+			return null;
 		}
 		return null;
 	}
