@@ -75,22 +75,18 @@ public class OrderController implements CrudController<Order> {
 	//Overload
 	public Order create(Long order_id) {
 		DecimalFormat df = new DecimalFormat("#.##");
-		LOGGER.info("Please enter a customer ID");
-		Long customer_id = utils.getLong();
-		Customer customer = customerDAO.read(customer_id);
-		LOGGER.info("Please enter a delivery date");
-		String shipment_date = utils.getDate();
+		Customer customer = getCustomerByCustomerId();
+		Long customer_id = customer.getCustomerId();
+		String shipment_date = getShipmentDate();
 		List<OrderItem> orderitems = new ArrayList<OrderItem>();
 		List<Item> items = new ArrayList<Item>();
 		String user_finished = "N";
 		Item item;
 		Double cost = (double) 0;
 		do {
-			LOGGER.info("Please enter an item ID");
-			Long item_id = utils.getLong();
-			LOGGER.info("Please enter how many items of these you want");
-			int item_quantity = Math.toIntExact(utils.getLong());
+			Long item_id = getItemId();
 			item = itemDAO.read(item_id);
+			int item_quantity = Math.toIntExact(getItemQuantity());
 			cost += item.getPrice() * item_quantity;
 			cost = Double.valueOf(df.format(cost));
 			orderitems.add(new OrderItem(order_id, item_id, item_quantity));
@@ -112,7 +108,7 @@ public class OrderController implements CrudController<Order> {
 		return order;
 	}
 	/**
-	 * Reads an existing order by taking in user input
+	 * Reads an existing order by taking in customer_id
 	 */
 	public List<Order> read(Long customer_id) {
 		List<Order> orders = orderDAO.readCustomers(customer_id);
@@ -130,15 +126,19 @@ public class OrderController implements CrudController<Order> {
 	 */
 	@Override
 	public Order update() {
-		LOGGER.info("Please enter the order_id of the order you would like to update");
-		Long order_id = utils.getLong();
-		Order orderFound = orderDAO.read(order_id);
-		if(orderFound == null) {
-			LOGGER.info("No order was found to update. Try Again (Y/N)?");
-			if(utils.getString().equals("Y")) {
-				update();
+		Long order_id = null;
+		Order orderFound = null;
+		String tryAgain = "Y";
+		do {
+			orderFound = getOrderByOrderId();
+			do {
+				LOGGER.info("No order was found to update. Try Again (Y/N)?");
+				tryAgain = utils.getString();
+			} while((!tryAgain.equalsIgnoreCase("Y")) && (!tryAgain.equalsIgnoreCase("N")));
+			if(tryAgain.equalsIgnoreCase("N")){
+				return null;
 			}
-		}
+		} while(orderFound == null && (!tryAgain.equalsIgnoreCase("N")));
 		Long customer_idFound = orderFound.getCustomerId();
 		Customer customer = customerDAO.read(customer_idFound);
 		List<OrderItem> orderitems = orderitemDAO.readOrderItems(order_id);
@@ -165,10 +165,7 @@ public class OrderController implements CrudController<Order> {
 	 */
 	@Override
 	public int delete() {
-		LOGGER.info("Please enter the order_id of the order you would like to delete");
-		Long order_id = utils.getLong();
-		orderitemDAO.deleteByOrder(order_id);
-		Order orderFound = orderDAO.read(order_id);
+		Order orderFound = getOrderByOrderId();
 		if(orderFound==null) {
 			LOGGER.info("No order was found to delete. Try Again (Y/N)");
 			if(utils.getString().equals("Y")) {
@@ -176,10 +173,43 @@ public class OrderController implements CrudController<Order> {
 			}
 			return 0;
 		}
-		LOGGER.info("Order Deleted");
+		Long order_id = orderFound.getOrderId();
+		orderitemDAO.deleteByOrder(order_id);
+		LOGGER.info("Order Deleted:");
 		Utils.printDottedLine();
 		Utils.printLine();
 		return orderDAO.delete(order_id);
+	}
+	/**
+	 * Finds customer from user input
+	 */
+	public Customer getCustomerByCustomerId() {
+		LOGGER.info("Please enter a customer ID");
+		Long customer_id = utils.getLong();
+		return customerDAO.read(customer_id);
+	}
+	/**
+	 * Finds order from user input
+	 */
+	public Order getOrderByOrderId() {
+		LOGGER.info("Please enter an order_id:");
+		Long order_id = utils.getLong();
+		return orderDAO.read(order_id);
+	}
+	/**
+	 * Return variables from user input
+	 */
+	public String getShipmentDate() {
+		LOGGER.info("Please enter a delivery date");
+		return utils.getDate();
+	}
+	public Long getItemId() {
+		LOGGER.info("Please enter an item ID");
+		return utils.getLong();
+	}
+	public Long getItemQuantity() {
+		LOGGER.info("Please enter an item quantity");
+		return utils.getLong();
 	}
 	/**
 	 * Prints the contents and information of an order
