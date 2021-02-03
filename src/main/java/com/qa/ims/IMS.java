@@ -39,7 +39,7 @@ public class IMS {
 		this.orders = new OrderController(custDAO, orderDAO, itemDAO, orderitemDAO, utils);
 	}
 	
-	public void imsHome() {
+	public void imsSystem() {
 		LOGGER.info("Welcome to the Inventory Management System!");
 		Utils.printDottedLine();
 		DBUtils.connect();
@@ -66,7 +66,7 @@ public class IMS {
 		} while (domain != CustomerDomain.RETURN);
 	}
 
-	public void imsSystem() {
+	public void imsDeveloper() {
 		Domain domain = null;
 		do {
 			LOGGER.info("Which entity would you like to use?");
@@ -85,7 +85,7 @@ public class IMS {
 		case DEVELOPER:
 			String password = restrictAccess(utils);
 			if(password.equals("root")) {
-				imsSystem();
+				imsDeveloper();
 			}else {
 				LOGGER.info("PASSWORD INCORRECT");
 				return;
@@ -147,27 +147,6 @@ public class IMS {
 		} while (!changeDomain);
 	}
 
-	public void doAction(CrudController<?> crudController, Action action) {
-		switch (action) {
-		case CREATE:
-			crudController.create();
-			break;
-		case READ:
-			crudController.readAll();
-			break;
-		case UPDATE:
-			crudController.update();
-			break;
-		case DELETE:
-			crudController.delete();
-			break;
-		case RETURN:
-			break;
-		default:
-			break;
-		}
-	}
-	
 	public void doCustomerAction(CustomerAction customerAction) {
 		switch (customerAction) {
 		case A:
@@ -204,6 +183,26 @@ public class IMS {
 		String password = utils.getString();
 		return password;
 	}
-
+	
+	public void doAction(CrudController<?> crudController, Action action) {
+		switch (action) {
+		case CREATE:
+			crudController.create();
+			break;
+		case READ:
+			crudController.readAll();
+			break;
+		case UPDATE:
+			crudController.update();
+			break;
+		case DELETE:
+			crudController.delete();
+			break;
+		case RETURN:
+			break;
+		default:
+			break;
+		}
+	}
 }
 
