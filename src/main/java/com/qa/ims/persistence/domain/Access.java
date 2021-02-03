@@ -7,15 +7,9 @@ import com.qa.ims.utils.Utils;
 
 public enum Access {
 
-	CUSTOMER("Please enter your Customer ID"), DEVELOPER("Please enter password to gain developer access"), STOP("Exit");
+	CUSTOMER, DEVELOPER, STOP;
 
 	public static final Logger LOGGER = LogManager.getLogger();
-
-	private String description;
-
-	private Access(String description) {
-		this.description = description;
-	}
 
 	public String getName() {
 		return this.name();
