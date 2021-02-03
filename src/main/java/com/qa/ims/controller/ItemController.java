@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.domain.Item;
+import com.qa.ims.utils.PrintUtils;
 import com.qa.ims.utils.Utils;
 
 /**
@@ -34,11 +35,11 @@ public class ItemController implements CrudController<Item> {
 	public List<Item> readAll() {
 		List<Item> items = itemDAO.readAll();
 		LOGGER.info("Items: ");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		for (Item item : items) {
 			LOGGER.info(item);
 		}
-		Utils.printLine();
+		PrintUtils.printLine();
 		return items;
 	}
 
@@ -55,9 +56,9 @@ public class ItemController implements CrudController<Item> {
 		price = Double.valueOf(df.format(price));
 		Item item = itemDAO.create(new Item(item_name, price));
 		LOGGER.info("Item Created");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		LOGGER.info(item);
-		Utils.printLine();
+		PrintUtils.printLine();
 		return item;
 	}
 
@@ -85,9 +86,9 @@ public class ItemController implements CrudController<Item> {
 			}
 		}
 		LOGGER.info("Item Updated");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		LOGGER.info(item);
-		Utils.printLine();
+		PrintUtils.printLine();
 		return item;
 	}
 
@@ -109,8 +110,8 @@ public class ItemController implements CrudController<Item> {
 			return 0;
 		}
 		LOGGER.info("Item Deleted");
-		Utils.printDottedLine();
-		Utils.printLine();
+		PrintUtils.printDottedLine();
+		PrintUtils.printLine();
 		return itemDAO.delete(item_id);
 	}
 

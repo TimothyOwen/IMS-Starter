@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.dao.CustomerDAO;
 import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.utils.PrintUtils;
 import com.qa.ims.utils.Utils;
 
 /**
@@ -33,11 +34,11 @@ public class CustomerController implements CrudController<Customer> {
 	public List<Customer> readAll() {
 		List<Customer> customers = customerDAO.readAll();
 		LOGGER.info("Customers: ");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		for (Customer customer : customers) {
 			LOGGER.info(customer);
 		}
-		Utils.printLine();
+		PrintUtils.printLine();
 		return customers;
 	}
 
@@ -52,9 +53,9 @@ public class CustomerController implements CrudController<Customer> {
 		String surname = utils.getString();
 		Customer customer = customerDAO.create(new Customer(firstName, surname));
 		LOGGER.info("Customer Created: ");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		LOGGER.info(customer);
-		Utils.printLine();
+		PrintUtils.printLine();
 		return customer;
 	}
 
@@ -82,9 +83,9 @@ public class CustomerController implements CrudController<Customer> {
 			}
 		}
 		LOGGER.info("Customer Updated: ");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		LOGGER.info(customer);
-		Utils.printLine();
+		PrintUtils.printLine();
 		return customer;
 	}
 
@@ -106,8 +107,8 @@ public class CustomerController implements CrudController<Customer> {
 			return 0;
 		}
 		LOGGER.info("Customer Deleted");
-		Utils.printDottedLine();
-		Utils.printLine();
+		PrintUtils.printDottedLine();
+		PrintUtils.printLine();
 		return customerDAO.delete(customer_id);
 	}
 

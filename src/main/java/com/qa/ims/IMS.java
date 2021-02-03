@@ -17,6 +17,7 @@ import com.qa.ims.persistence.domain.Access;
 import com.qa.ims.persistence.domain.CustomerDomain;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.utils.DBUtils;
+import com.qa.ims.utils.PrintUtils;
 import com.qa.ims.utils.Utils;
 
 public class IMS {
@@ -41,14 +42,14 @@ public class IMS {
 	
 	public void imsSystem() {
 		LOGGER.info("Welcome to the Inventory Management System!");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		DBUtils.connect();
 		DBUtils db = DBUtils.getInstance();
 		db.init("C:/Users/Work/JavaRepos/Projects/First Project/IMS/src/main/resources/sql-schema.sql");
 		Access access = null;
 		do {
 			LOGGER.info("Which access level would you like to use?");
-			Utils.printLine();
+			PrintUtils.printLine();
 			Access.printAccess();
 			access = Access.getAccess(utils);
 			accessAction(access);
@@ -59,7 +60,7 @@ public class IMS {
 		CustomerDomain domain = null;
 		do {
 			LOGGER.info("What would you like to do?");
-			Utils.printLine();
+			PrintUtils.printLine();
 			CustomerDomain.printDomains();
 			domain = CustomerDomain.getCustomerDomain(utils);
 			customerDomainAction();
@@ -70,7 +71,7 @@ public class IMS {
 		Domain domain = null;
 		do {
 			LOGGER.info("Which entity would you like to use?");
-			Utils.printLine();
+			PrintUtils.printLine();
 			Domain.printDomains();
 			domain = Domain.getDomain(utils);
 			domainAction(domain);
@@ -102,7 +103,7 @@ public class IMS {
 		boolean changeDomain = false;
 		do {
 			LOGGER.info("Welcome to the customers' menu. Please choose a selection:");
-			Utils.printDottedLine();
+			PrintUtils.printDottedLine();
 			CustomerAction.printActions();
 			CustomerAction customerAction = CustomerAction.getAction(utils);
 			if (customerAction == CustomerAction.RETURN) {
@@ -135,7 +136,7 @@ public class IMS {
 			}
 
 			LOGGER.info(() -> "What would you like to do with " + domain.name().toLowerCase() + ":");
-			Utils.printLine();
+			PrintUtils.printLine();
 			Action.printActions(domain);
 			Action action = Action.getAction(utils);
 
@@ -178,7 +179,7 @@ public class IMS {
 	
 	public String restrictAccess(Utils utils) {
 		LOGGER.info("DEVELOPER AREA RESTRICTED");
-		Utils.printDottedLine();
+		PrintUtils.printDottedLine();
 		LOGGER.info("Please enter password:");
 		String password = utils.getString();
 		return password;
