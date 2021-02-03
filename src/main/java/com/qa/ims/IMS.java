@@ -53,7 +53,7 @@ public class IMS {
 			Access.printAccess();
 			access = Access.getAccess(utils);
 			accessAction(access);
-		} while (access != Access.STOP);
+		} while (access != Access.EXIT);
 	} 
 	
 	public void imsCustomer() {
@@ -92,7 +92,7 @@ public class IMS {
 				return;
 			}
 			break;
-		case STOP:
+		case EXIT:
 			return;
 		default:
 			break;
