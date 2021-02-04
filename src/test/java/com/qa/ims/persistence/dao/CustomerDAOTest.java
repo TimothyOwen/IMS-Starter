@@ -5,7 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.qa.ims.persistence.domain.Customer;
@@ -15,12 +16,11 @@ public class CustomerDAOTest {
 
 	private final CustomerDAO DAO = new CustomerDAO();
 
-	@Before
-	public void setup() {
-		System.out.println("Yep");
-		DBUtils.connect("db.properties");
-		DBUtils db = DBUtils.getInstance();
-		db.init("C:/Users/Work/JavaRepos/Projects/First Project/IMS/src/test/resources/sql-schema.sql");
+	@BeforeClass
+	public static void setup() {
+		DBUtils.connect();
+		DBUtils.getInstance().init("src/test/resources/sql-schema.sql");
+		DBUtils.getInstance().init("src/test/resources/sql-data.sql");
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class CustomerDAOTest {
 
 	@Test
 	public void testUpdate() {
-		final Customer updated = new Customer(1L, "chris", "perrins");
+		final Customer updated = new Customer(2L, "chris", "perrins");
 		assertEquals(updated, DAO.update(updated));
 
 	}
@@ -57,5 +57,13 @@ public class CustomerDAOTest {
 	@Test
 	public void testDelete() {
 		assertEquals(1, DAO.delete(1));
+	}
+	@Test
+	public void testDeleteInvalid() {
+		assertEquals(0, DAO.delete(2000));
+	}
+	@AfterClass
+	public static void deleteAll() {
+		DBUtils.getInstance().init("src/test/resources/sql-dropall.sql");
 	}
 }
