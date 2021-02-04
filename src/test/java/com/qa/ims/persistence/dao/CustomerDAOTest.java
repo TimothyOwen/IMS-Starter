@@ -17,8 +17,10 @@ public class CustomerDAOTest {
 
 	@Before
 	public void setup() {
-		DBUtils.connect();
-		DBUtils.getInstance().init("src/test/resources/sql-schema.sql", "src/test/resources/sql-data.sql");
+		System.out.println("Yep");
+		DBUtils.connect("db.properties");
+		DBUtils db = DBUtils.getInstance();
+		db.init("C:/Users/Work/JavaRepos/Projects/First Project/IMS/src/test/resources/sql-schema.sql");
 	}
 
 	@Test
