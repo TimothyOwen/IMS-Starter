@@ -1,5 +1,6 @@
 package com.qa.ims;
 
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,5 +13,5 @@ public class Runner {
 		ims.imsSystem();
 		LOGGER.info("SO LONG!");
 	}
-
 }
+ 

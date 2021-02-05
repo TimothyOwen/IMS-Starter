@@ -1,5 +1,6 @@
 package com.qa.ims;
 
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +27,7 @@ public class IMS {
 
 	private final CustomerController customers;
 	private final ItemController items;
-	private final OrderController orders;
+	private final OrderController orders; 
 	private final Utils utils;
 
 	public IMS() {
@@ -43,9 +44,9 @@ public class IMS {
 	public void imsSystem() {
 		LOGGER.info("Welcome to the Inventory Management System!");
 		PrintUtils.printDottedLine();
+		DBUtils db = DBUtils.connect("initialdb.properties");
+		db.init("src/main/resources/sql-schema.sql");
 		DBUtils.connect();
-		DBUtils db = DBUtils.getInstance();
-		db.init("C:/Users/Work/JavaRepos/Projects/First Project/IMS/src/main/resources/sql-schema.sql");
 		Access access = null;
 		do {
 			LOGGER.info("Which access level would you like to use?");
