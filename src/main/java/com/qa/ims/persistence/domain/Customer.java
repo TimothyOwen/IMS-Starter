@@ -58,17 +58,17 @@ public class Customer {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) 
 			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Customer other = (Customer) obj;
-		if (getFirstName() == null) {
-			if (other.getFirstName() != null)
+		if (firstName == null) {
+			if (other.firstName != null)
 				return false;
-		} else if (!getFirstName().equals(other.getFirstName()))
+		} else if (!firstName.equals(other.firstName))
 			return false;
 		if (customer_id == null) {
 			if (other.customer_id != null)
