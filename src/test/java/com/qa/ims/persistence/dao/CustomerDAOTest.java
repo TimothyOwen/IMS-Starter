@@ -21,7 +21,7 @@ public class CustomerDAOTest {
 		DBUtils.connect();
 		DBUtils.getInstance().init("src/test/resources/sql-schema.sql");
 		DBUtils.getInstance().init("src/test/resources/sql-data.sql");
-	}
+	} 
 
 	@Test
 	public void testCreate() {
@@ -51,7 +51,6 @@ public class CustomerDAOTest {
 	public void testUpdate() {
 		final Customer updated = new Customer(2L, "chris", "perrins");
 		assertEquals(updated, DAO.update(updated));
-
 	}
 
 	@Test

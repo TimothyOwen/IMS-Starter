@@ -26,31 +26,31 @@ public class OrderItemDAOTest {
 	@Test
 	public void testCreate() {
 		final OrderItem created = new OrderItem(2L, 1L, 1L, 4);
-		assertEquals(created.hashCode(), orderitemDAO.create(created).hashCode());
+		assertEquals(created, orderitemDAO.create(created));
 	}
 
 	@Test
 	public void testReadAll() {
 		List<OrderItem> expected = new ArrayList<>();
 		expected.add(new OrderItem(1L, 1L, 1L, 2));
-		assertEquals(expected.hashCode(), orderitemDAO.readAll().hashCode());
+		assertEquals(expected, orderitemDAO.readAll());
 	}
 
 	@Test
 	public void testReadLatest() {
-		assertEquals((new OrderItem(1L, 1L, 1L, 2)).hashCode(), orderitemDAO.readLatest().hashCode());
+		assertEquals((new OrderItem(1L, 1L, 1L, 2)), orderitemDAO.readLatest());
 	}
 
 	@Test
 	public void testRead() {
 		final long ID = 1L;
-		assertEquals((new OrderItem(1L, 1L, 1L, 2)).hashCode(), orderitemDAO.read(ID).hashCode());
+		assertEquals((new OrderItem(1L, 1L, 1L, 2)), orderitemDAO.read(ID));
 	}
 
 	@Test
 	public void testUpdate() {
 		final OrderItem updated = new OrderItem(2L, 1L, 2L, 4);
-		assertEquals(updated.hashCode(), orderitemDAO.update(updated).hashCode());
+		assertEquals(updated, orderitemDAO.update(updated));
 
 	}
 

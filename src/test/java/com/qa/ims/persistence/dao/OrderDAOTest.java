@@ -26,31 +26,31 @@ public class OrderDAOTest {
 	@Test
 	public void testCreate() {
 		final Order created = new Order(2L, 1L, 33.86, "23/11/21");
-		assertEquals(created.hashCode(), orderDAO.create(created).hashCode());
+		assertEquals(created, orderDAO.create(created));
 	}
-
+ 
 	@Test
 	public void testReadAll() {
 		List<Order> expected = new ArrayList<>();
 		expected.add(new Order(1L, 1L , 25.73, "03/07/21"));
-		assertEquals(expected.hashCode(), orderDAO.readAll().hashCode());
+		assertEquals(expected, orderDAO.readAll());
 	}
 
 	@Test
 	public void testReadLatest() {
-		assertEquals((new Order(1L, 1L, 25.73, "03/07/21")).hashCode(), orderDAO.readLatest().hashCode());
+		assertEquals((new Order(1L, 1L, 25.73, "03/07/21")), orderDAO.readLatest());
 	}
 
 	@Test
 	public void testRead() {
 		final long ID = 1L;
-		assertEquals((new Order(ID, 1L, 25.73, "03/07/21")).hashCode(), orderDAO.read(ID).hashCode());
+		assertEquals((new Order(ID, 1L, 25.73, "03/07/21")), orderDAO.read(ID));
 	}
 
 	@Test
 	public void testUpdate() {
 		final Order updated = new Order(2L, 1L, 400D, "26/12/21");
-		assertEquals(updated.hashCode(), orderDAO.update(updated).hashCode());
+		assertEquals(updated, orderDAO.update(updated));
 
 	}
 

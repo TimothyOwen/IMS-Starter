@@ -26,31 +26,31 @@ public class ItemDAOTest {
 	@Test
 	public void testCreate() {
 		final Item created = new Item(2L, "Orange Juice", 2.03);
-		assertEquals(created.hashCode(), itemDAO.create(created).hashCode());
+		assertEquals(created, itemDAO.create(created));
 	}
 
 	@Test
 	public void testReadAll() {
 		List<Item> expected = new ArrayList<>();
 		expected.add(new Item(1L, "Apple Juice", 2.28));
-		assertEquals(expected.hashCode(), itemDAO.readAll().hashCode());
+		assertEquals(expected, itemDAO.readAll());
 	}
 
 	@Test
 	public void testReadLatest() {
-		assertEquals((new Item(1L, "Apple Juice", 2.28)).hashCode(), itemDAO.readLatest().hashCode());
+		assertEquals((new Item(1L, "Apple Juice", 2.28)), itemDAO.readLatest());
 	}
-
+ 
 	@Test
 	public void testRead() {
 		final long ID = 1L;
-		assertEquals((new Item(ID, "Apple Juice", 2.28)).hashCode(), itemDAO.read(ID).hashCode());
+		assertEquals((new Item(ID, "Apple Juice", 2.28)), itemDAO.read(ID));
 	}
 
 	@Test
 	public void testUpdate() {
 		final Item updated = new Item(2L, "Cranberry Juice", 2.53);
-		assertEquals(updated.hashCode(), itemDAO.update(updated).hashCode());
+		assertEquals(updated, itemDAO.update(updated));
 
 	}
 
