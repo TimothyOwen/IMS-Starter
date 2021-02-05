@@ -46,5 +46,29 @@ public class Item {
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
 		return result;
 	}
-	//Equals
+	public boolean equals(Object obj) {
+		if (this == obj) 
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (item_id == null) {
+			if (other.item_id != null)
+				return false;
+		} else if (!item_id.equals(other.item_id))
+			return false;
+		if (item_name == null) {
+			if (other.item_name != null)
+				return false;
+		} else if (!item_name.equals(other.item_name))
+			return false;
+		if (getPrice() == null) {
+			if (other.getPrice() != null)
+				return false;
+		} else if (!price.equals(other.price))
+			return false;
+		return true;
+	}
 }

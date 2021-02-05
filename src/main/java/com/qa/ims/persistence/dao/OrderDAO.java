@@ -25,11 +25,11 @@ public class OrderDAO implements Dao<Order> {
 		double cost = resultSet.getDouble("cost");
 		String shipment_date = resultSet.getString("shipment_date");
 		return new Order(order_id, customer_id, cost, shipment_date);
-	}
+	} 
 
 	/**
 	 * Reads all orders from the database
-	 * 
+	 *  
 	 * @return A list of orders
 	 */
 	@Override

@@ -118,7 +118,8 @@ public class OrderItemDAO implements Dao<OrderItem> {
 						.prepareStatement("UPDATE orders_items SET order_id = ?, item_id = ?, item_quantity = ? WHERE order_item_id = ?");) {
 			statement.setLong(1, orderitem.getOrderId());
 			statement.setLong(2, orderitem.getItemId());
-			statement.setInt(3, orderitem.getItemQuantity());
+			statement.setInt(3, orderitem.getItemQuantity()); 
+			statement.setLong(4, orderitem.getOrderItemId());
 			statement.executeUpdate();
 			return read(orderitem.getOrderItemId());
 		} catch (Exception e) {

@@ -29,7 +29,7 @@ public class ItemDAO implements Dao<Item> {
 	/**
 	 * Reads all items from the database
 	 * 
-	 * @return A list of items
+	 * @return A list of items 
 	 */
 	@Override
 	public List<Item> readAll() {
