@@ -114,7 +114,6 @@ public class OrderControllerTest {
 		Mockito.when(customerDAO.read(customer_id)).thenReturn(customer);
 		Mockito.when(itemDAO.read(item_id)).thenReturn(item);
 		Mockito.when(orderDAO.read(order_id)).thenReturn(old);
-		Mockito.when(orderDAO.create(updated)).thenReturn(updated);
 		Mockito.when(orderDAO.update(updated)).thenReturn(updated);
 		Mockito.when(orderitemDAO.readOrderItems(order_id)).thenReturn(orderitems);
 		Mockito.when(orderitemDAO.delete(1L)).thenReturn(0);
@@ -126,9 +125,8 @@ public class OrderControllerTest {
 		Mockito.verify(this.utils, Mockito.times(1)).getString();
 		Mockito.verify(this.customerDAO, Mockito.times(2)).read(order_id);
 		Mockito.verify(this.itemDAO, Mockito.times(2)).read(item_id);
-		Mockito.verify(this.orderDAO, Mockito.times(1)).read(order_id);
+		Mockito.verify(this.orderDAO, Mockito.times(2)).read(order_id);
 		Mockito.verify(this.orderDAO, Mockito.times(1)).update(updated);
-		Mockito.verify(this.orderDAO, Mockito.times(1)).create(updated);
 		Mockito.verify(this.orderitemDAO, Mockito.times(1)).readOrderItems(order_id);
 		Mockito.verify(this.orderitemDAO, Mockito.times(1)).delete(orderitem_id);
 		

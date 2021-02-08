@@ -102,7 +102,7 @@ public class OrderController implements CrudController<Order> {
 		} while (!user_finished.equals("Y"));
 		Order order;
 		if(orderDAO.read(order_id) == null) {
-			order = new Order(customer_id, cost, shipment_date);
+			order = new Order(order_id, customer_id, cost, shipment_date);
 			order = orderDAO.create(order);
 		}else {
 			order = new Order(order_id, customer_id, cost, shipment_date);
