@@ -42,8 +42,8 @@ public class OrderItem {
 	}
 	@Override
 	public String toString() {
-		return "Order Item Id= " + order_item_id + "  Order Id= " + order_id + "  Item Id= " + item_id
-				+ " Item Quantity= " + item_quantity;
+		return "Order Item ID: " + order_item_id + "  Order ID: " + order_id + "  Item ID: " + item_id
+				+ "  Item Quantity: " + item_quantity;
 	}
 	public int hashCode() {
 		final int prime = 31;
