@@ -105,6 +105,7 @@ public class IMS {
 
 	private void domainAction(Domain domain) {
 		boolean changeDomain = false;
+		LOGGER.info(domain);
 		do {
 
 			CrudController<?> active = null;
@@ -193,6 +194,10 @@ public class IMS {
 		default:
 			break;
 		}
+	}
+
+	public Utils getUtils() {
+		return this.utils;
 	}
 }
 
