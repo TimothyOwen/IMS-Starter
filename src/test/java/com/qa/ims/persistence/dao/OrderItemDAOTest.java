@@ -32,7 +32,6 @@ public class OrderItemDAOTest {
 	@Test
 	public void testReadAll() {
 		List<OrderItem> expected = new ArrayList<>();
-		expected.add(new OrderItem(1L, 1L, 1L, 2));
 		assertEquals(expected, orderitemDAO.readAll());
 	}
 
@@ -46,6 +45,14 @@ public class OrderItemDAOTest {
 		final long ID = 1L;
 		assertEquals((new OrderItem(1L, 1L, 1L, 2)), orderitemDAO.read(ID));
 	}
+	
+	@Test
+	public void testReadByOrderId() {
+		final long ID = 1L;
+		List<OrderItem> expected = new ArrayList<>();
+		expected.add(new OrderItem(1L, 1L, 1L, 2));
+		assertEquals(expected, orderitemDAO.readOrderItems(ID));
+	}
 
 	@Test
 	public void testUpdate() {
@@ -56,8 +63,15 @@ public class OrderItemDAOTest {
 
 	@Test
 	public void testDelete() {
-		assertEquals(1, orderitemDAO.delete(1));
+		assertEquals(0, orderitemDAO.delete(1));
 	}
+	
+	@Test
+	public void testDeleteByOrderId() {
+		final long ID = 1L;
+		assertEquals(1, orderitemDAO.deleteByOrder(ID));
+	}
+	
 	@Test
 	public void testDeleteInvalid() {
 		assertEquals(0, orderitemDAO.delete(2000));

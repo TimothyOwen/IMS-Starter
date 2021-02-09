@@ -56,7 +56,6 @@ public class imsTest {
 	public void testSystemCustomer() {
 		Access[] accesss = new Access[] {Access.CUSTOMER, Access.DEVELOPER, Access.EXIT};
 		CustomerAction[] actions = new CustomerAction[] {CustomerAction.A, CustomerAction.B, CustomerAction.C, CustomerAction.D, CustomerAction.E, CustomerAction.F, CustomerAction.RETURN};
-		//Mockito.mockStatic(Access.class);
 		Mockito.mockStatic(CustomerAction.class);
 		this.utils = ims.getUtils();
 		Mockito.when(Access.getAccess(utils)).thenReturn(Access.CUSTOMER, Access.EXIT);
@@ -65,5 +64,4 @@ public class imsTest {
 		Mockito.when(CustomerAction.values()).thenReturn(actions);
 		ims.imsSystem();
 	}
-	
 }
