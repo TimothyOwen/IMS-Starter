@@ -46,20 +46,26 @@ public class CustomerDAOTest {
 		final long ID = 1L;
 		assertEquals(new Customer(ID, "jordan", "harrison"), DAO.read(ID));
 	}
-
+	
 	@Test
 	public void testUpdate() {
 		final Customer updated = new Customer(2L, "chris", "perrins");
 		assertEquals(updated, DAO.update(updated));
 	}
-
+	
+	@Test
+	public void testUpdateInvalid() {
+		final Customer updated = new Customer(50L, "chris", "perrins");
+		assertEquals(null, DAO.update(updated));
+	}
+	
 	@Test
 	public void testDelete() {
 		assertEquals(1, DAO.delete(1));
 	}
 	@Test
 	public void testDeleteInvalid() {
-		assertEquals(0, DAO.delete(2000));
+		assertEquals(0, DAO.delete(-2000));
 	}
 	@AfterClass
 	public static void deleteAll() {
