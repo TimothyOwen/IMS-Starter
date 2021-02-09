@@ -15,7 +15,6 @@ import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
 import com.qa.ims.persistence.dao.OrderItemDAO;
 import com.qa.ims.persistence.domain.Access;
-import com.qa.ims.persistence.domain.CustomerDomain;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.utils.DBUtils;
 import com.qa.ims.utils.PrintUtils;
@@ -56,17 +55,6 @@ public class IMS {
 			accessAction(access);
 		} while (access != Access.EXIT);
 	} 
-	
-	public void imsCustomer() {
-		CustomerDomain domain = null;
-		do {
-			LOGGER.info("What would you like to do?");
-			PrintUtils.printLine();
-			CustomerDomain.printDomains();
-			domain = CustomerDomain.getCustomerDomain(utils);
-			customerDomainAction();
-		} while (domain != CustomerDomain.RETURN);
-	}
 
 	public void imsDeveloper() {
 		Domain domain = null;
