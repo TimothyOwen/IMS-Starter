@@ -1,68 +1,92 @@
-Coverage: 34%
-# Project Title
+Coverage: 82%
+# Inventory Management System (IMS)
 
-One Paragraph of project description goes here
+An inventory management system that an end user can interact with via a Command-Line Interface. The application supports customer, item and order entities. Functionality is included for customer-level usability and an administrator.	
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Either clone this repository or download the source code.	
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Up-to-date version of Java installed on end-user's machine.	
 
-```
-Give examples
-```
+Ensure the `db.properties` file located at `src/main/resources` contains the correct url and password for the desired database instance that is to be interacted with. `initialdb.properties` should contain the exact same url but without the name of the database to be created.
 
-### Installing
+### Running the system
 
-A step by step series of examples that tell you how to get a development env running
+From the command line navigate to the root folder of the cloned git repository.
 
-Say what the step will be
+Next, run the following command:
 
-```
-Give the example
+```shell
+java -jar maven-jar-example-project-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-And repeat
+Once the system is running from the Command-Line Interface an end-user will be prompted to choose their access level.		
 
-```
-until finished
-```
+An **administrator** is able to access CRUD functionality for all 3 entities.  	
 
-End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
+A **customer** is able to choose from a list of options:  
 
-Explain how to run the automated tests for this system. Break down into which tests and what they do
+
+   **A.** Change their customer information.	
+
+   **B.** View all available items.	
+
+   **C.** View their orders.	
+
+   **D.** Create an order.	
+
+   **E.** Update one of their orders.	
+
+   **F.** Delete an order.	
+
+## Testing
 
 ### Unit Tests 
 
-Explain what these tests test, why and how to run them
+Unit testing is done through JUnit and Mockito.	
 
+The system is based on the Repository Model Pattern. This model has the general form of:	
+
+* Controller
+* Service
+* Data Access
+
+Unit testing is done in accordance with this model. So we have three general groups of unit tests:
+
+* Controlllers
+* Domain
+* DAO
+
+The interaction between groups is mocked using Mockito.
+
+An example of a unit test for the Order Controller method:
+
+```java
+@Mock
+private OrderDAO orderDAO;
+	
+@InjectMocks
+private OrderController orderController;
+
+@Test
+public void testReadAll() {
+	List<Order> orders = new ArrayList<>();
+	orders.add(new Order(1L, 1L, 25.73, "03/07/21"));
+	Mockito.when(orderDAO.readAll()).thenReturn(orders);
+
+	assertEquals(orders, this.orderController.readAll());
+
+	Mockito.verify(this.orderDAO, Mockito.times(1)).readAll();
+}
 ```
-Give an example
-```
 
-### Integration Tests 
-Explain what these tests test, why and how to run them
+### Coding Style Tests
 
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+Static code analysis is conducted through Sonarqube.
 
 ## Built With
 
@@ -75,15 +99,10 @@ We use [SemVer](http://semver.org/) for versioning.
 ## Authors
 
 * **Chris Perrins** - *Initial work* - [christophperrins](https://github.com/christophperrins)
+* **JHarry444** - *Starter* - [JHarry444](https://github.com/JHarry444)
 
 ## License
 
 This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md) file for details 
 
-*For help in [Choosing a license](https://choosealicense.com/)*
 
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
