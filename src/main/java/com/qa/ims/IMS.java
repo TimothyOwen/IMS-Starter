@@ -78,7 +78,6 @@ public class IMS {
 				imsAdministrator();
 			}else {
 				LOGGER.info("PASSWORD INCORRECT");
-				return;
 			}
 			break;
 		case EXIT:
@@ -148,8 +147,7 @@ public class IMS {
 			break;
 		case C:
 			LOGGER.info("Please enter a customer ID");
-			Long customer_id = utils.getLong();
-			orders.read(customer_id);
+			orders.read(utils.getLong());
 			break;
 		case D:
 			orders.create();
@@ -171,8 +169,7 @@ public class IMS {
 		LOGGER.info("ADMINISTRATOR ACCESS RESTRICTED");
 		PrintUtils.printDottedLine();
 		LOGGER.info("Please enter password:");
-		String password = utils.getString();
-		return password;
+		return utils.getString();
 	}
 	
 	public void doAction(CrudController<?> crudController, Action action) {

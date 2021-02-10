@@ -35,7 +35,7 @@ public class PrintUtils {
 	}
 	public void printTicket(Long order_id, Customer customer, List<Item> items, List<OrderItem> orderitems, Double cost, String shipment_date) {
 		printDottedLine();
-		LOGGER.info("Order ID: "+order_id);
+		LOGGER.info("Order ID: {}", order_id);
 		printDottedLine();
 		LOGGER.info("Customer Name: "+customer.getFirstName()+" "+customer.getSurname());
 		printDottedLine();

@@ -23,19 +23,18 @@ public class OrderItemSubController {
 		}
 	}
 	public List<OrderItem> readOrderItems(Long order_id) {
-		List<OrderItem> orderitems = orderitemDAO.readOrderItems(order_id);
-		return orderitems;
+		return orderitemDAO.readOrderItems(order_id);
 	}
 	public void deleteOrderItems(Long order_id) {
 		orderitemDAO.deleteByOrder(order_id);
 	}
 	//Deletes order items but saves them first
-	public List<Item> trackAndDeleteOrderItems(List<OrderItem> orderitems, Long order_id){
-		List<Item> items = new ArrayList<Item>();
+	public List<Item> trackAndDeleteOrderItems(List<OrderItem> orderitems){
+		List<Item> items = new ArrayList<>();
 		for(OrderItem orderitem: orderitems) {
 			orderitemDAO.delete(orderitem.getOrderItemId());
 			items.add(itemDAO.read(orderitem.getItemId()));
-		};
+		}
 		return items;
 	}
 }

@@ -70,6 +70,6 @@ public class Utils {
 				LOGGER.info("Invalid input - Please enter again");
 			}
 		} while (Day == 0 || Month == 0 || Year == 0 || (Day>31 || Day<1) || (Month>12 || Month<1) || (Year<21));
-		return String.valueOf(Day)+"/"+String.valueOf(Month)+"/"+String.valueOf(Year);
+		return Day+"/"+Month+"/"+Year;
 	}
 }

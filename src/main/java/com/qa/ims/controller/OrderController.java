@@ -83,9 +83,8 @@ public class OrderController implements CrudController<Order> {
 		Customer customer = getCustomerByCustomerId();
 		Long customer_id = customer.getCustomerId();
 		String shipment_date = getShipmentDate();
-		List<OrderItem> orderitems = new ArrayList<OrderItem>();
-		List<Item> items = new ArrayList<Item>();
-		String user_finished = "N";
+		List<OrderItem> orderitems = new ArrayList<>();
+		List<Item> items = new ArrayList<>();
 		Item item;
 		Double cost = (double) 0;
 		do {
@@ -98,8 +97,7 @@ public class OrderController implements CrudController<Order> {
 			items.add(item);
 			printutils.printTicket(order_id, customer, items, orderitems, cost, shipment_date);
 			LOGGER.info("Do you want to submit your order? (Y/N)");
-			user_finished = utils.getString();
-		} while (!user_finished.equals("Y"));
+		} while (!utils.getString().equals("Y"));
 		Order order;
 		if(orderDAO.read(order_id) == null) {
 			order = new Order(order_id, customer_id, cost, shipment_date);
@@ -146,7 +144,7 @@ public class OrderController implements CrudController<Order> {
 		Long customer_idFound = orderFound.getCustomerId();
 		Customer customer = customerDAO.read(customer_idFound);
 		List<OrderItem> orderitems = orderitemDAO.readOrderItems(order_id);
-		List<Item> items = orderitemsubcontroller.trackAndDeleteOrderItems(orderitems, order_id);
+		List<Item> items = orderitemsubcontroller.trackAndDeleteOrderItems(orderitems);
 		Double costFound = orderFound.getCost();
 		String shipment_dateFound = orderFound.getShipmentDate();
 		printutils.printTicket(order_id, customer, items, orderitems, costFound, shipment_dateFound);
