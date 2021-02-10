@@ -1,7 +1,7 @@
 Coverage: 82%
 # Inventory Management System (IMS)
 
-An inventory management system that an end user can interact with via a Command-Line Interface. The application supports customer, item and order entities. Functionality is included for system maintenance.
+An inventory management system that an end user can interact with via a Command-Line Interface. The application supports customer, item and order entities. Functionality is included for customer-level usability and an administrator.
 
 ## Getting Started
 
@@ -25,7 +25,7 @@ java -jar maven-jar-example-project-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 
 Once the system is running from the Command-Line Interface an end-user will be prompted to choose their access level.
 
-A developer/system administrator is able to access CRUD functionality for all 3 entities.
+An administrator is able to access CRUD functionality for all 3 entities.
 
 A customer is able to choose from a list of options;
 
