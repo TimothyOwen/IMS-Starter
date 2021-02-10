@@ -30,10 +30,15 @@ An administrator is able to access CRUD functionality for all 3 entities.
 A customer is able to choose from a list of options;	
 
 A. Change their customer information.	
+
 B. View all available items.	
+
 C. View their orders.	
+
 D. Create an order.	
+
 E. Update one of their orders.	
+
 F. Delete an order.	
 
 ## Testing
@@ -56,7 +61,7 @@ Unit testing is done in accordance with this model. So we have three general gro
 
 The interaction between groups is mocked using Mockito.
 
-An example of a unit test:
+An example of a unit test for the Order Controller method:
 
 ```java
 @Mock
