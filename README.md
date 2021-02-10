@@ -105,5 +105,4 @@ We use [SemVer](http://semver.org/) for versioning.
 
 This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md) file for details 
 
-*For help in [Choosing a license](https://choosealicense.com/)*
 
