@@ -36,25 +36,25 @@ public class imsTest {
 	
 	@Test
 	public void testSystemDeveloper() {
-		Access[] accesss = new Access[] {Access.CUSTOMER, Access.DEVELOPER, Access.EXIT};
+		Access[] accesss = new Access[] {Access.CUSTOMER, Access.ADMINISTRATOR, Access.EXIT};
 		Domain[] domains = new Domain[] {Domain.CUSTOMER, Domain.ITEM, Domain.ORDER, Domain.RETURN};
 		Action[] actions = new Action[] {Action.CREATE, Action.DELETE, Action.READ, Action.UPDATE, Action.RETURN};
 		Mockito.mockStatic(Access.class);
 		Mockito.mockStatic(Domain.class);
 		Mockito.mockStatic(Action.class);
 		this.utils = ims.getUtils();
-		Mockito.when(Access.getAccess(utils)).thenReturn(Access.DEVELOPER, Access.EXIT);
+		Mockito.when(Access.getAccess(utils)).thenReturn(Access.ADMINISTRATOR, Access.EXIT);
 		Mockito.when(Access.values()).thenReturn(accesss);
 		Mockito.when(Domain.getDomain(utils)).thenReturn(Domain.ORDER, Domain.RETURN);
 		Mockito.when(Domain.values()).thenReturn(domains);
 		Mockito.when(Action.getAction(utils)).thenReturn(Action.RETURN);
 		Mockito.when(Action.values()).thenReturn(actions);
-		ims.imsDeveloper();
+		ims.imsAdministrator();
 	}
 	
 	@Test
 	public void testSystemCustomer() {
-		Access[] accesss = new Access[] {Access.CUSTOMER, Access.DEVELOPER, Access.EXIT};
+		Access[] accesss = new Access[] {Access.CUSTOMER, Access.ADMINISTRATOR, Access.EXIT};
 		CustomerAction[] actions = new CustomerAction[] {CustomerAction.A, CustomerAction.B, CustomerAction.C, CustomerAction.D, CustomerAction.E, CustomerAction.F, CustomerAction.RETURN};
 		Mockito.mockStatic(CustomerAction.class);
 		this.utils = ims.getUtils();

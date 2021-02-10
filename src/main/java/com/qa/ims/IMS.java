@@ -56,7 +56,7 @@ public class IMS {
 		} while (access != Access.EXIT);
 	} 
 
-	public void imsDeveloper() {
+	public void imsAdministrator() {
 		Domain domain = null;
 		do {
 			LOGGER.info("Which entity would you like to use?");
@@ -72,10 +72,10 @@ public class IMS {
 		case CUSTOMER:
 			customerDomainAction();
 			break;
-		case DEVELOPER:
+		case ADMINISTRATOR:
 			String password = restrictAccess(utils);
 			if(password.equals("root")) {
-				imsDeveloper();
+				imsAdministrator();
 			}else {
 				LOGGER.info("PASSWORD INCORRECT");
 				return;
@@ -168,7 +168,7 @@ public class IMS {
 	}
 	
 	public String restrictAccess(Utils utils) {
-		LOGGER.info("DEVELOPER AREA RESTRICTED");
+		LOGGER.info("ADMINISTRATOR ACCESS RESTRICTED");
 		PrintUtils.printDottedLine();
 		LOGGER.info("Please enter password:");
 		String password = utils.getString();

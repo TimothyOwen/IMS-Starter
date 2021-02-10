@@ -7,7 +7,7 @@ import com.qa.ims.utils.Utils;
 
 public enum Access {
 
-	CUSTOMER, DEVELOPER, EXIT;
+	CUSTOMER, ADMINISTRATOR, EXIT;
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
