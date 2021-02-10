@@ -1,17 +1,17 @@
 Coverage: 82%
 # Inventory Management System (IMS)
 
-An inventory management system that an end user can interact with via a Command-Line Interface. The application supports customer, item and order entities. Functionality is included for customer-level usability and an administrator.
+An inventory management system that an end user can interact with via a Command-Line Interface. The application supports customer, item and order entities. Functionality is included for customer-level usability and an administrator.	
 
 ## Getting Started
 
-Either clone this repository or download the source code.
+Either clone this repository or download the source code.	
 
 ### Prerequisites
 
-Up to date version of Java installed on end-user's machine.
+Up to date version of Java installed on end-user's machine.	
 
-Ensure the `db.properties` file located at `src/main/resources` contains the correct url and password for the desired database instance that is to be interacted with.
+Ensure the `db.properties` file located at `src/main/resources` contains the correct url and password for the desired database instance that is to be interacted with.	
 
 ### Running the system
 
@@ -23,26 +23,26 @@ Next, run the following command:
 java -jar maven-jar-example-project-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-Once the system is running from the Command-Line Interface an end-user will be prompted to choose their access level.
+Once the system is running from the Command-Line Interface an end-user will be prompted to choose their access level.	
 
-An administrator is able to access CRUD functionality for all 3 entities.
+An administrator is able to access CRUD functionality for all 3 entities.	
 
-A customer is able to choose from a list of options;
+A customer is able to choose from a list of options;	
 
-A. Change their customer information.
-B. View all available items.
-C. View their orders.
-D. Create an order.
-E. Update one of their orders.
-F. Delete an order.
+A. Change their customer information.	
+B. View all available items.	
+C. View their orders.	
+D. Create an order.	
+E. Update one of their orders.	
+F. Delete an order.	
 
 ## Testing
 
 ### Unit Tests 
 
-Unit testing is done through JUnit and Mockito.
+Unit testing is done through JUnit and Mockito.	
 
-The system is based on the Repository Model Pattern. This model has the general form of:
+The system is based on the Repository Model Pattern. This model has the general form of:	
 
 * Controller
 * Service
@@ -60,19 +60,21 @@ An example of a unit test:
 
 ```java
 @Mock
-	private OrderDAO orderDAO;
+private OrderDAO orderDAO;
+	
 @InjectMocks
-	private OrderController orderController;
+private OrderController orderController;
+
 @Test
-	public void testReadAll() {
-		List<Order> orders = new ArrayList<>();
-		orders.add(new Order(1L, 1L, 25.73, "03/07/21"));
-		Mockito.when(orderDAO.readAll()).thenReturn(orders);
+public void testReadAll() {
+	List<Order> orders = new ArrayList<>();
+	orders.add(new Order(1L, 1L, 25.73, "03/07/21"));
+	Mockito.when(orderDAO.readAll()).thenReturn(orders);
 
-		assertEquals(orders, this.orderController.readAll());
+	assertEquals(orders, this.orderController.readAll());
 
-		Mockito.verify(this.orderDAO, Mockito.times(1)).readAll();
-	}
+	Mockito.verify(this.orderDAO, Mockito.times(1)).readAll();
+}
 ```
 
 ### Coding Style Tests
