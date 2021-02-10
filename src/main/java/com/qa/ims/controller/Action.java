@@ -41,9 +41,9 @@ public enum Action {
 		for (Action action : Action.values()) {
 			String actionString = action.getName();
 			if(actionString.equals("RETURN")) {
-				LOGGER.info("("+actionString+")");
+				LOGGER.info("({})", actionString);
 			}else {
-				LOGGER.info("("+actionString+") a "+domain.toString().toLowerCase());
+				LOGGER.info("({}) a "+domain.toString().toLowerCase(), actionString);
 			}
 		}
 	}

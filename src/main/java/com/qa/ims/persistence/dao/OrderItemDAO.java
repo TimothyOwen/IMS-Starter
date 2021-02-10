@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -171,14 +172,14 @@ public class OrderItemDAO implements Dao<OrderItem> {
 				while(resultSet.next()) {
 					orderitems.add(modelFromResultSet(resultSet));
 					
-				};
+				}
 				return orderitems;
 			}
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 }

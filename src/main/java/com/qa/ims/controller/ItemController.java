@@ -72,7 +72,7 @@ public class ItemController implements CrudController<Item> {
 		Item itemFound = itemDAO.read(item_id);
 		Item item = null;
 		if(itemFound != null) {
-			LOGGER.info("Item Found:  "+itemFound);
+			LOGGER.info("Item Found:  {}", itemFound);
 			LOGGER.info("Please enter an updated item name");
 			String item_name = utils.getString();
 			LOGGER.info("Please enter an update price");

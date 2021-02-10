@@ -69,7 +69,7 @@ public class CustomerController implements CrudController<Customer> {
 		Customer customerFound = customerDAO.read(customer_id);
 		Customer customer = null;
 		if(customerFound!=null) {
-			LOGGER.info("Customer Found:  "+customerFound);
+			LOGGER.info("Customer Found:  {}", customerFound);
 			LOGGER.info("Please enter an updated first name");
 			String firstName = utils.getString();
 			LOGGER.info("Please enter an updated surname");

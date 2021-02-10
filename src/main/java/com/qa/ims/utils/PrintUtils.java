@@ -35,16 +35,16 @@ public class PrintUtils {
 	}
 	public void printTicket(Long order_id, Customer customer, List<Item> items, List<OrderItem> orderitems, Double cost, String shipment_date) {
 		printDottedLine();
-		LOGGER.info("Order ID: "+order_id);
+		LOGGER.info("Order ID: {}", order_id);
 		printDottedLine();
-		LOGGER.info("Customer Name: "+customer.getFirstName()+" "+customer.getSurname());
+		LOGGER.info("Customer Name: %d %d",customer.getFirstName(),customer.getSurname());
 		printDottedLine();
 		for (int i = 0; i < items.size(); i++) {
-			LOGGER.info(items.get(i).getItemName() + " x" + orderitems.get(i).getItemQuantity());
+			LOGGER.info("%d x %d",items.get(i).getItemName(),orderitems.get(i).getItemQuantity());
 		}
-		LOGGER.info("Total: £ " + cost);
+		LOGGER.info("Total: £ {}", cost);
 		printDottedLine();
-		LOGGER.info("Delivery Date: "+shipment_date);
+		LOGGER.info("Delivery Date: {}", shipment_date);
 		printDottedLine();
 	}
 }
