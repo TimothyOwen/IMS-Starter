@@ -3,6 +3,7 @@ package com.qa.ims.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.qa.ims.utils.PrintUtils;
 import com.qa.ims.utils.Utils;
 
 /**
@@ -41,6 +42,7 @@ public enum CustomerAction {
 			String customerActionString = customerAction.getDescription();
 			LOGGER.info(customerActionString);
 			LOGGER.info("");
+			if(customerAction.equals(CustomerAction.F)) {PrintUtils.printDottedLine();}
 		}
 	}
 

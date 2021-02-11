@@ -67,29 +67,21 @@ public class ItemController implements CrudController<Item> {
 	 */
 	@Override
 	public Item update() {
-		LOGGER.info("Please enter the item_id of the item you would like to update");
-		Long item_id = utils.getLong();
-		Item itemFound = itemDAO.read(item_id);
-		Item item = null;
-		if(itemFound != null) {
-			LOGGER.info("Item Found:  {}", itemFound);
-			LOGGER.info("Please enter an updated item name");
-			String item_name = utils.getString();
-			LOGGER.info("Please enter an update price");
-			Double price = utils.getDouble();
-			item = itemDAO.update(new Item(item_id, item_name, price));
-		}
-		else {
-			LOGGER.info("No item was found to update. Try Again (Y/N)");
-			if(utils.getString().equals("Y")) {
-				update();
-			}
-		}
+		DecimalFormat df = new DecimalFormat("#.##");
+		Item itemFound = getItem();
+		Long item_id = itemFound.getItemId();
+		LOGGER.info("Item Found:  {}", itemFound);
+		LOGGER.info("Please enter an updated item name");
+		String item_name = utils.getString();
+		LOGGER.info("Please enter an update price");
+		Double price = utils.getDouble();
+		price = Double.valueOf(df.format(price));
+		Item itemUpdated = itemDAO.update(new Item(item_id, item_name, price));
 		LOGGER.info("Item Updated");
 		PrintUtils.printDottedLine();
-		LOGGER.info(item);
+		LOGGER.info(itemUpdated);
 		PrintUtils.printLine();
-		return item;
+		return itemUpdated;
 	}
 
 	/**
@@ -99,20 +91,25 @@ public class ItemController implements CrudController<Item> {
 	 */
 	@Override
 	public int delete() {
-		LOGGER.info("Please enter the item_id of the item you would like to delete");
-		Long item_id = utils.getLong();
-		Item itemFound = itemDAO.read(item_id);
-		if(itemFound==null) {
-			LOGGER.info("No item was found to delete. Try Again (Y/N)");
-			if(utils.getString().equals("Y")) {
-				delete();
-			}
-			return 0;
-		}
+		Item itemFound = getItem();
+		Long item_id = itemFound.getItemId();
 		LOGGER.info("Item Deleted");
 		PrintUtils.printDottedLine();
 		PrintUtils.printLine();
 		return itemDAO.delete(item_id);
 	}
+	/**
+	 * Retrieves a customer using user input
+	 */
+	public Item getItem() {
+		LOGGER.info("Please enter an item_id");
+		Long item_id = utils.getLong();
+		while(item_id > itemDAO.readLatest().getItemId() || item_id<1) {
+			LOGGER.info("This is not a valid item_id. Please try again");
+			item_id = utils.getLong();
+		}
+		return itemDAO.read(item_id);
+	}
+	
 
 }

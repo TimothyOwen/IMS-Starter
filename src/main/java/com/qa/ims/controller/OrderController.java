@@ -80,7 +80,7 @@ public class OrderController implements CrudController<Order> {
 	//Overload used for create and update methods
 	public Order createOrderItems(Long order_id) {
 		DecimalFormat df = new DecimalFormat("#.##");
-		Customer customer = getCustomerByCustomerId();
+		Customer customer = getCustomer();
 		Long customer_id = customer.getCustomerId();
 		String shipment_date = getShipmentDate();
 		List<OrderItem> orderitems = new ArrayList<>();
@@ -130,14 +130,14 @@ public class OrderController implements CrudController<Order> {
 		Order orderFound = null;
 		String tryAgain = "N";
 		do {
-			orderFound = getOrderByOrderId();
+			orderFound = getOrder();
 			while(orderFound == null) {
 				LOGGER.info("No order was found to update. Try Again (Y/N)?");
 				tryAgain = utils.getString();
 				if(tryAgain.equalsIgnoreCase("N")){
 					return null;
 				}
-				orderFound = getOrderByOrderId();		
+				orderFound = getOrder();		
 			}
 		} while(!tryAgain.equalsIgnoreCase("N"));
 		Long order_id = orderFound.getOrderId();	
@@ -160,7 +160,7 @@ public class OrderController implements CrudController<Order> {
 	 */
 	@Override
 	public int delete() {
-		Order orderFound = getOrderByOrderId();
+		Order orderFound = getOrder();
 		if(orderFound==null) {
 			LOGGER.info("No order was found to delete. Try Again (Y/N)");
 			if(utils.getString().equals("Y")) {
@@ -178,17 +178,28 @@ public class OrderController implements CrudController<Order> {
 	/**
 	 * Finds customer from user input
 	 */
-	public Customer getCustomerByCustomerId() {
-		LOGGER.info("Please enter a customer ID");
+	public Customer getCustomer() {
+		LOGGER.info("Please enter a customer_id");
 		Long customer_id = utils.getLong();
+		while(customer_id > customerDAO.readLatest().getCustomerId() || customer_id<1) {
+			LOGGER.info("This is not a valid customer_id. Please try again");
+			customer_id = utils.getLong();
+		}
 		return customerDAO.read(customer_id);
 	}
 	/**
 	 * Finds order from user input
 	 */
-	public Order getOrderByOrderId() {
-		LOGGER.info("Please enter an order_id:");
+	public Order getOrder() {
+		LOGGER.info("Please enter an order_id");
 		Long order_id = utils.getLong();
+		try {
+			while(order_id > orderDAO.readLatest().getCustomerId() || order_id<1) {
+				LOGGER.info("This is not a valid order_id. Please try again");
+				order_id = utils.getLong();
+			}
+		}
+		catch(Exception e) {order_id = 1L;}
 		return orderDAO.read(order_id);
 	}
 	/**
@@ -199,11 +210,21 @@ public class OrderController implements CrudController<Order> {
 		return utils.getDate();
 	}
 	public Long getItemId() {
-		LOGGER.info("Please enter an item ID");
-		return utils.getLong();
+		LOGGER.info("Please enter an item_id");
+		Long item_id = utils.getLong();
+		while(item_id > itemDAO.readLatest().getItemId() || item_id<1) {
+			LOGGER.info("This is not a valid item_id. Please try again");
+			item_id = utils.getLong();
+		}
+		return item_id;
 	}
 	public Long getItemQuantity() {
 		LOGGER.info("Please enter an item quantity");
-		return utils.getLong();
+		Long item_quantity = utils.getLong();
+		while(item_quantity < 0) {
+			LOGGER.info("This is not a valid item_quantity. Please try again");
+			item_quantity = utils.getLong();
+		}
+		return item_quantity;
 	}
 }

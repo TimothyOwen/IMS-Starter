@@ -3,6 +3,7 @@ package com.qa.ims.persistence.domain;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.qa.ims.utils.PrintUtils;
 import com.qa.ims.utils.Utils;
 
 public enum Access {
@@ -18,6 +19,7 @@ public enum Access {
 	public static void printAccess() {
 		for (Access access : Access.values()) {
 			LOGGER.info(access.getName());
+			if(access.equals(Access.ADMINISTRATOR)) {PrintUtils.printDottedLine();}
 		}
 	}
 

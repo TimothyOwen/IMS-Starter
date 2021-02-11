@@ -14,12 +14,28 @@ public class PrintUtils {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	public static void printLine() {
-		LOGGER.info("______________________________");
-		LOGGER.info("");
+		String width = "";
+		int terminalWidth = jline.TerminalFactory.get().getWidth();
+		for(int i=0; i<terminalWidth; i++) {
+			width += "_";
+		}
+		if(terminalWidth<10) {
+			LOGGER.info("__________________________________________________________");
+		}else {
+			LOGGER.info(width);
+		}
 	}
 	public static void printDottedLine() {
-		LOGGER.info("--------------");
-		LOGGER.info("");
+		String width = "";
+		int terminalWidth = jline.TerminalFactory.get().getWidth();
+		for(int i=0; i<terminalWidth; i++) {
+			width += "-";
+		}
+		if(terminalWidth<10) {
+			LOGGER.info("----------------------------------------------------------");
+		}else {
+			LOGGER.info(width);
+		}
 	}
 
 	public void printUpdate(Order order) {
@@ -37,10 +53,10 @@ public class PrintUtils {
 		printDottedLine();
 		LOGGER.info("Order ID: {}", order_id);
 		printDottedLine();
-		LOGGER.info("Customer Name: %d %d",customer.getFirstName(),customer.getSurname());
+		LOGGER.info(String.format("Customer Name: %s %s",customer.getFirstName(),customer.getSurname()));
 		printDottedLine();
 		for (int i = 0; i < items.size(); i++) {
-			LOGGER.info("%d x %d",items.get(i).getItemName(),orderitems.get(i).getItemQuantity());
+			LOGGER.info(String.format("%s x %s",items.get(i).getItemName(),orderitems.get(i).getItemQuantity()));
 		}
 		LOGGER.info("Total: £ {}", cost);
 		printDottedLine();
