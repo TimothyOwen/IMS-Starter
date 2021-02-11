@@ -14,28 +14,11 @@ public class PrintUtils {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	public static void printLine() {
-		String width = "";
-		int terminalWidth = jline.TerminalFactory.get().getWidth();
-		for(int i=0; i<terminalWidth; i++) {
-			width += "_";
-		}
-		if(terminalWidth<10) {
-			LOGGER.info("__________________________________________________________");
-		}else {
-			LOGGER.info(width);
-		}
+		LOGGER.info("__________________________________________________________");
 	}
 	public static void printDottedLine() {
-		String width = "";
-		int terminalWidth = jline.TerminalFactory.get().getWidth();
-		for(int i=0; i<terminalWidth; i++) {
-			width += "-";
-		}
-		if(terminalWidth<10) {
-			LOGGER.info("----------------------------------------------------------");
-		}else {
-			LOGGER.info(width);
-		}
+		LOGGER.info("----------------------------------------------------------");
+		
 	}
 
 	public void printUpdate(Order order) {
