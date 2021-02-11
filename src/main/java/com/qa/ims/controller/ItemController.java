@@ -92,6 +92,9 @@ public class ItemController implements CrudController<Item> {
 	@Override
 	public int delete() {
 		Item itemFound = getItem();
+		if(itemDAO.readLatest().equals(null)) {
+			delete();
+		}
 		Long item_id = itemFound.getItemId();
 		LOGGER.info("Item Deleted");
 		PrintUtils.printDottedLine();

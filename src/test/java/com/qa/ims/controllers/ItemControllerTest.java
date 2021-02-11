@@ -63,6 +63,7 @@ public class ItemControllerTest {
 		Long id = 1L;
 		Mockito.when(utils.getLong()).thenReturn(id);
 		Mockito.when(itemDAO.read(id)).thenReturn(old);
+		Mockito.when(itemDAO.readLatest()).thenReturn(old);
 		Mockito.when(utils.getString()).thenReturn(updated.getItemName());
 		Mockito.when(utils.getDouble()).thenReturn(updated.getPrice());
 		Mockito.when(itemDAO.update(updated)).thenReturn(updated);
@@ -70,7 +71,6 @@ public class ItemControllerTest {
 		assertEquals(updated, this.itemController.update());
 		
 		Mockito.verify(this.utils, Mockito.times(1)).getLong();
-		Mockito.verify(this.utils, Mockito.times(1)).getString();
 		Mockito.verify(this.utils, Mockito.times(1)).getDouble();
 		Mockito.verify(this.itemDAO, Mockito.times(1)).read(id);
 		Mockito.verify(this.itemDAO, Mockito.times(1)).update(updated);
@@ -79,15 +79,15 @@ public class ItemControllerTest {
 	@Test
 	public void testUpdateNotFound() {
 		Long id = 2L;
-		Mockito.when(utils.getLong()).thenReturn(id);
-		Mockito.when(itemDAO.read(id)).thenReturn(null);
-		Mockito.when(utils.getString()).thenReturn("Y", "N");
+		Item old = new Item(1L, "Apple juice", 2.28D);
+		Mockito.when(utils.getLong()).thenReturn(id, 1L);
+		Mockito.when(itemDAO.readLatest()).thenReturn(old);
+		Mockito.when(itemDAO.read(1L)).thenReturn(old);
 		
 		assertEquals(null, this.itemController.update());
 		
 		Mockito.verify(this.utils, Mockito.times(2)).getLong();
-		Mockito.verify(this.utils, Mockito.times(2)).getString();
-		Mockito.verify(this.itemDAO, Mockito.times(2)).read(id);
+		Mockito.verify(this.itemDAO, Mockito.times(1)).read(1L);
 	}
 	
 
@@ -96,27 +96,31 @@ public class ItemControllerTest {
 		final long id = 1L;
 		Item old = new Item(1L, "Apple juice", 2.28D);
 		Mockito.when(utils.getLong()).thenReturn(id);
-		Mockito.when(itemDAO.read(id)).thenReturn(old);
+		Mockito.when(itemDAO.readLatest()).thenReturn(old);
 		Mockito.when(itemDAO.delete(id)).thenReturn(1);
-
+		Mockito.when(itemDAO.read(id)).thenReturn(old);
+		
 		assertEquals(1L, this.itemController.delete());
 
 		Mockito.verify(this.utils, Mockito.times(1)).getLong();
 		Mockito.verify(this.itemDAO, Mockito.times(1)).read(id);
+		Mockito.verify(this.itemDAO, Mockito.times(2)).readLatest();
 		Mockito.verify(this.itemDAO, Mockito.times(1)).delete(id);
 	}
 	
 	@Test
 	public void testDeleteNotFound() {
 		final long id = 2L;
-		Mockito.when(utils.getLong()).thenReturn(id);
-		Mockito.when(itemDAO.read(id)).thenReturn(null);
-		Mockito.when(utils.getString()).thenReturn("Y","N");
+		Item old = new Item(1L, "Apple juice", 2.28D);
+		Mockito.when(utils.getLong()).thenReturn(id, 1L);
+		Mockito.when(itemDAO.readLatest()).thenReturn(old);
+		Mockito.when(itemDAO.delete(1L)).thenReturn(1);
+		Mockito.when(itemDAO.read(1L)).thenReturn(old);
 		
-		assertEquals(0, this.itemController.delete());
+		assertEquals(1, this.itemController.delete());
 
 		Mockito.verify(this.utils, Mockito.times(2)).getLong();
-		Mockito.verify(this.utils, Mockito.times(2)).getString();
-		Mockito.verify(this.itemDAO, Mockito.times(2)).read(id);
+		Mockito.verify(this.itemDAO, Mockito.times(1)).read(1L);
+		Mockito.verify(this.itemDAO, Mockito.times(3)).readLatest();
 	}
 }
