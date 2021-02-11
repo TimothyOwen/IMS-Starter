@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.domain.Domain;
+import com.qa.ims.utils.PrintUtils;
 import com.qa.ims.utils.Utils;
 
 /**
@@ -41,9 +42,10 @@ public enum Action {
 		for (Action action : Action.values()) {
 			String actionString = action.getName();
 			if(actionString.equals("RETURN")) {
+				PrintUtils.printDottedLine();
 				LOGGER.info("({})", actionString);
 			}else {
-				LOGGER.info("({}) a "+domain.toString().toLowerCase(), actionString);
+				LOGGER.info(String.format("(%s) a %s", actionString, domain.toString().toLowerCase()));
 			}
 		}
 	}

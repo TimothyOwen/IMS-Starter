@@ -60,6 +60,7 @@ public class CustomerControllerTest {
 		Long id = 1L;
 		Mockito.when(utils.getLong()).thenReturn(1L);
 		Mockito.when(customerDAO.read(id)).thenReturn(old);
+		Mockito.when(customerDAO.readLatest()).thenReturn(old);
 		Mockito.when(utils.getString()).thenReturn(updated.getFirstName(), updated.getSurname());
 		Mockito.when(customerDAO.update(updated)).thenReturn(updated);
 		
@@ -74,15 +75,15 @@ public class CustomerControllerTest {
 	@Test
 	public void testUpdateNotFound() {
 		Long id = 2L;
-		Mockito.when(utils.getLong()).thenReturn(id);
-		Mockito.when(customerDAO.read(id)).thenReturn(null);
-		Mockito.when(utils.getString()).thenReturn("Y", "N");
+		Customer old = new Customer(1L, "jordan", "harrison");
+		Mockito.when(utils.getLong()).thenReturn(id,1L);
+		Mockito.when(customerDAO.read(1L)).thenReturn(old);
+		Mockito.when(customerDAO.readLatest()).thenReturn(old);
 		
 		assertEquals(null, this.customerController.update());
 		
 		Mockito.verify(this.utils, Mockito.times(2)).getLong();
-		Mockito.verify(this.utils, Mockito.times(2)).getString();
-		Mockito.verify(this.customerDAO, Mockito.times(2)).read(id);
+		Mockito.verify(this.customerDAO, Mockito.times(1)).read(1L);
 	}
 	
 
@@ -92,9 +93,10 @@ public class CustomerControllerTest {
 		Customer old = new Customer(1L, "jordan", "harrison");
 		Mockito.when(utils.getLong()).thenReturn(id);
 		Mockito.when(customerDAO.read(id)).thenReturn(old);
+		Mockito.when(customerDAO.readLatest()).thenReturn(old);
 		Mockito.when(customerDAO.delete(id)).thenReturn(1);
 
-		assertEquals(1L, this.customerController.delete());
+		assertEquals(1, this.customerController.delete());
 
 		Mockito.verify(this.utils, Mockito.times(1)).getLong();
 		Mockito.verify(this.customerDAO, Mockito.times(1)).read(id);
@@ -104,14 +106,14 @@ public class CustomerControllerTest {
 	@Test
 	public void testDeleteNotFound() {
 		final long id = 2L;
-		Mockito.when(utils.getLong()).thenReturn(id);
-		Mockito.when(customerDAO.read(id)).thenReturn(null);
-		Mockito.when(utils.getString()).thenReturn("Y","N");
+		Customer old = new Customer(1L, "jordan", "harrison");
+		Mockito.when(utils.getLong()).thenReturn(id, 1L);
+		Mockito.when(customerDAO.read(1L)).thenReturn(old);
+		Mockito.when(customerDAO.readLatest()).thenReturn(old);
 		
 		assertEquals(0, this.customerController.delete());
 
 		Mockito.verify(this.utils, Mockito.times(2)).getLong();
-		Mockito.verify(this.utils, Mockito.times(2)).getString();
-		Mockito.verify(this.customerDAO, Mockito.times(2)).read(id);
+		Mockito.verify(this.customerDAO, Mockito.times(1)).read(1L);
 	}
 }

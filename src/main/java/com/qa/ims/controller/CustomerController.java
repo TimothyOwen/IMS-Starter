@@ -64,24 +64,14 @@ public class CustomerController implements CrudController<Customer> {
 	 */
 	@Override
 	public Customer update() {
-		LOGGER.info("Please enter the customer id of the customer you would like to update");
-		Long customer_id = utils.getLong();
-		Customer customerFound = customerDAO.read(customer_id);
-		Customer customer = null;
-		if(customerFound!=null) {
-			LOGGER.info("Customer Found:  {}", customerFound);
-			LOGGER.info("Please enter an updated first name");
-			String firstName = utils.getString();
-			LOGGER.info("Please enter an updated surname");
-			String surname = utils.getString();
-			customer = customerDAO.update(new Customer(customer_id, firstName, surname));
-		}
-		else { 
-			LOGGER.info("No customer was found to update. Try Again (Y/N)");
-			if(utils.getString().equals("Y")) {
-				update();
-			}
-		}
+		Customer customerFound = getCustomer();
+		Long customer_id = customerFound.getCustomerId();
+		LOGGER.info("Customer Found:  {}", customerFound);
+		LOGGER.info("Please enter an updated first name");
+		String firstName = utils.getString();
+		LOGGER.info("Please enter an updated surname");
+		String surname = utils.getString();
+		Customer customer = customerDAO.update(new Customer(customer_id, firstName, surname));
 		LOGGER.info("Customer Updated: ");
 		PrintUtils.printDottedLine();
 		LOGGER.info(customer);
@@ -96,20 +86,24 @@ public class CustomerController implements CrudController<Customer> {
 	 */
 	@Override
 	public int delete() {
-		LOGGER.info("Please enter the customer id of the customer you would like to delete");
-		Long customer_id = utils.getLong();
-		Customer customerFound = customerDAO.read(customer_id);
-		if(customerFound==null) {
-			LOGGER.info("No customer was found to delete. Try Again (Y/N)");
-			if(utils.getString().equals("Y")) {
-				delete();
-			}
-			return 0;
-		}
+		Customer customerFound = getCustomer();
+		Long customer_id = customerFound.getCustomerId();
 		LOGGER.info("Customer Deleted");
 		PrintUtils.printDottedLine();
 		PrintUtils.printLine();
 		return customerDAO.delete(customer_id);
+	}
+	/**
+	 * Retrieves a customer using user input
+	 */
+	public Customer getCustomer() {
+		LOGGER.info("Please enter a customer ID");
+		Long customer_id = utils.getLong();
+		while(customer_id > customerDAO.readLatest().getCustomerId() || customer_id<1) {
+			LOGGER.info("This is not a valid customer_id. Please try again.");
+			customer_id = utils.getLong();
+		}
+		return customerDAO.read(customer_id);
 	}
 
 }

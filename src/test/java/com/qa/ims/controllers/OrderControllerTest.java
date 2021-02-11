@@ -65,7 +65,9 @@ public class OrderControllerTest {
 		Mockito.when(utils.getDate()).thenReturn(shipment_date);
 		Mockito.when(utils.getString()).thenReturn("Y");
 		Mockito.when(customerDAO.read(customer_id)).thenReturn(customer);
+		Mockito.when(customerDAO.readLatest()).thenReturn(customer);
 		Mockito.when(itemDAO.read(item_id)).thenReturn(item);
+		Mockito.when(itemDAO.readLatest()).thenReturn(item);
 		Mockito.when(orderDAO.readLatest()).thenReturn(old);
 		Mockito.when(orderDAO.create(created)).thenReturn(created);
 
@@ -112,8 +114,11 @@ public class OrderControllerTest {
 		Mockito.when(utils.getDate()).thenReturn("11/09/21");
 		Mockito.when(utils.getString()).thenReturn("Y");
 		Mockito.when(customerDAO.read(customer_id)).thenReturn(customer);
+		Mockito.when(customerDAO.readLatest()).thenReturn(customer);
 		Mockito.when(itemDAO.read(item_id)).thenReturn(item);
+		Mockito.when(itemDAO.readLatest()).thenReturn(item);
 		Mockito.when(orderDAO.read(order_id)).thenReturn(old);
+		Mockito.when(orderDAO.readLatest()).thenReturn(old);
 		Mockito.when(orderDAO.update(updated)).thenReturn(updated);
 		Mockito.when(orderitemDAO.readOrderItems(order_id)).thenReturn(orderitems);
 		Mockito.when(orderitemDAO.delete(1L)).thenReturn(0);
@@ -136,14 +141,13 @@ public class OrderControllerTest {
 	public void testUpdateNotFound() {
 		Long order_id = 2L;
 		Mockito.when(this.utils.getLong()).thenReturn(order_id);
-		Mockito.when(this.orderDAO.read(order_id)).thenReturn(null);
 		Mockito.when(this.utils.getString()).thenReturn("Y", "N");
 		
 		assertEquals(null, this.orderController.update());
 		
 		Mockito.verify(this.utils, Mockito.times(2)).getLong();
 		Mockito.verify(this.utils, Mockito.times(2)).getString();
-		Mockito.verify(this.orderDAO, Mockito.times(2)).read(order_id);
+		Mockito.verify(this.orderDAO, Mockito.times(2)).readLatest();
 	}
 	
 	@Test
@@ -165,14 +169,13 @@ public class OrderControllerTest {
 	public void testDeleteNotFound() {
 		final long order_id = 2L;
 		Mockito.when(utils.getLong()).thenReturn(order_id);
-		Mockito.when(orderDAO.read(order_id)).thenReturn(null);
 		Mockito.when(utils.getString()).thenReturn("Y","N");
 		
 		assertEquals(0, this.orderController.delete());
 
 		Mockito.verify(this.utils, Mockito.times(2)).getLong();
 		Mockito.verify(this.utils, Mockito.times(2)).getString();
-		Mockito.verify(this.orderDAO, Mockito.times(2)).read(order_id);
+		Mockito.verify(this.orderDAO, Mockito.times(2)).readLatest();
 	}
 	
 	@Test

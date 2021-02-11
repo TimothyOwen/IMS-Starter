@@ -14,12 +14,11 @@ public class PrintUtils {
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	public static void printLine() {
-		LOGGER.info("______________________________");
-		LOGGER.info("");
+		LOGGER.info("__________________________________________________________");
 	}
 	public static void printDottedLine() {
-		LOGGER.info("--------------");
-		LOGGER.info("");
+		LOGGER.info("----------------------------------------------------------");
+		
 	}
 
 	public void printUpdate(Order order) {
@@ -37,10 +36,10 @@ public class PrintUtils {
 		printDottedLine();
 		LOGGER.info("Order ID: {}", order_id);
 		printDottedLine();
-		LOGGER.info("Customer Name: %d %d",customer.getFirstName(),customer.getSurname());
+		LOGGER.info(String.format("Customer Name: %s %s",customer.getFirstName(),customer.getSurname()));
 		printDottedLine();
 		for (int i = 0; i < items.size(); i++) {
-			LOGGER.info("%d x %d",items.get(i).getItemName(),orderitems.get(i).getItemQuantity());
+			LOGGER.info(String.format("%s x %s",items.get(i).getItemName(),orderitems.get(i).getItemQuantity()));
 		}
 		LOGGER.info("Total: £ {}", cost);
 		printDottedLine();

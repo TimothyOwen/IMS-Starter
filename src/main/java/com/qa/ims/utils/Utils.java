@@ -60,6 +60,7 @@ public class Utils {
 		Long Year = (long) 0;
 		do {
 			try {
+				PrintUtils.printDottedLine();
 				LOGGER.info("Please enter the day (dd)");
 				Day = getLong();
 				LOGGER.info("Please enter the month (mm)");
