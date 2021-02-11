@@ -1,5 +1,6 @@
 package com.qa.ims.persistence.domain;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -33,7 +34,7 @@ public class ItemTest {
 		Item item = new Item("Shampoo",2.99);
 		actual[0] = item.getItemName();
 		actual[1] = item.getPrice();
-		assertEquals(expected, actual);
+		assertArrayEquals(expected, actual);
 	}
 	@Test
 	public void testSetId() {
