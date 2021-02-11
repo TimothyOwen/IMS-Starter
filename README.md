@@ -20,7 +20,7 @@ From the command line navigate to the root folder of the cloned git repository.
 Next, run the following command:
 
 ```shell
-java -jar maven-jar-example-project-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+java -jar maven-jar-example-project-0.0.1-jar-with-dependencies.jar
 ```
 
 Once the system is running from the Command-Line Interface an end-user will be prompted to choose their access level.		
