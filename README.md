@@ -25,7 +25,7 @@ java -jar maven-jar-example-project-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 
 Once the system is running from the Command-Line Interface an end-user will be prompted to choose their access level.		
 
-An **administrator** is able to access CRUD functionality for all 3 entities.  	
+An **administrator** is able to access CRUD functionality for all 3 entities. The password for the administrator access level is `root`.	
 
 
 A **customer** is able to choose from a list of options:  
