@@ -11,7 +11,7 @@ Either clone this repository or download the source code.
 
 Up-to-date version of Java installed on end-user's machine.	
 
-Ensure the `db.properties` file located at `src/main/resources` contains the correct url and password for the desired database instance that is to be interacted with. `initialdb.properties` should contain the exact same url but without the name of the database to be created.
+Ensure the `db.properties` file located at `src/main/resources` contains the correct url and password for the desired database instance that is to be interacted with. `initialdb.properties` should contain the exact same url but without the name of the database to be created, this is to ensure the correct tables are created if they do not already exist.
 
 ### Running the system
 
@@ -49,7 +49,7 @@ A **customer** is able to choose from a list of options:
 
 Unit testing is done through JUnit and Mockito.	
 
-The system is based on the Repository Model Pattern. This model has the general form of:	
+The system is broadly based on the Data-Access-Object (DAO) Pattern, a structural pattern used to isolate the business layer from the persistence layer. This model has the general form of:	
 
 * Controller
 * Service
@@ -86,7 +86,11 @@ public void testReadAll() {
 
 ### Coding Style Tests
 
-Static code analysis is conducted through Sonarqube.
+Static code analysis is conducted through Sonarqube. 
+
+To run the static code analysis install Sonarqube, then navigate to the `src` folder and run the following command:
+
+` mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin`
 
 ## Built With
 
