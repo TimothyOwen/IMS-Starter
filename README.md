@@ -55,7 +55,7 @@ A **customer** is able to choose from a list of options:
 
 Unit testing is done through JUnit and Mockito.	
 
-The system is broadly based on the Data-Access-Object (DAO) Pattern, a structural pattern used to isolate the business layer from the persistence layer. This model has the general form of:	
+The system is broadly based on the Data-Access-Object (DAO) Pattern, a structural pattern used to isolate the business layer from the persistence layer. This model has the general form of:	 
 
 * Controller
 * Service
