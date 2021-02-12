@@ -88,7 +88,7 @@ public void testReadAll() {
 
 Static code analysis is conducted through Sonarqube. 
 
-To run the static code analysis install Sonarqube, then navigate to the `src` folder and run the following command:
+To run the static code analysis, install Sonarqube, then navigate to the `src` folder and run the following command:
 
 ` mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin`
 
