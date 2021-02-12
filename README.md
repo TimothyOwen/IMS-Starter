@@ -11,16 +11,28 @@ Either clone this repository or download the source code.
 
 Up-to-date version of Java installed on end-user's machine.	
 
-Ensure the `db.properties` file located at `src/main/resources` contains the correct url and password for the desired database instance that is to be interacted with. `initialdb.properties` should contain the exact same url but without the name of the database to be created, this is to ensure the correct database is created if it does not already exist.
+Ensure the `db.properties` file located at `src/main/resources` matches the correct url and password for the desired database instance that is to be interacted with.
+
+eg. `jdbc:mysql://localhost:3306/ims`
+
+`initialdb.properties` should contain the exact same url but without the name of the database to be created, this is to ensure the correct database is created if it does not already exist.
+
+eg. `jdbc:mysql://localhost:3306/`
 
 ### Running the system
 
 From the command line navigate to the root folder of the cloned git repository.
 
+First run the maven command:
+
+```shell
+mvn clean package
+```
+
 Next, run the following command:
 
 ```shell
-java -jar maven-jar-example-project-0.0.1-jar-with-dependencies.jar
+java -jar ims-0.0.1-jar-with-dependencies.jar
 ```
 
 Once the system is running from the Command-Line Interface an end-user will be prompted to choose their access level.		
