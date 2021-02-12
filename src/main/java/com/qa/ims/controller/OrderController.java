@@ -77,7 +77,7 @@ public class OrderController implements CrudController<Order> {
 		PrintUtils.printLine();
 		return order;
 	}
-	//Overload used for create and update methods
+	//Seperation of concerns. Method used by create and update methods
 	public Order createOrderItems(Long order_id) {
 		DecimalFormat df = new DecimalFormat("#.##");
 		Customer customer = getCustomer();
