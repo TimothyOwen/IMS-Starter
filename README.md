@@ -11,7 +11,7 @@ Either clone this repository or download the source code.
 
 Up-to-date version of Java installed on end-user's machine.	
 
-Ensure the `db.properties` file located at `src/main/resources` matches the correct url and password for the desired database instance that is to be interacted with.
+Ensure the `db.properties` file located at `src/main/resources` matches the correct url and password for the desired database instance that is to be interacted with. `ims` should be appended to the end of the url.
 
 eg. `jdbc:mysql://localhost:3306/ims`
 
