@@ -1,68 +1,102 @@
-Coverage: 34%
-# Inventory Management System
+Coverage: 83%
+# Inventory Management System (IMS)
 
-One Paragraph of project description goes here
+An inventory management system that an end user can interact with via a Command-Line Interface. The application supports customer, item and order entities. Functionality is included for customer-level usability and an administrator.	
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Either clone this repository or download the source code.	
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Up-to-date version of Java installed on end-user's machine.	
 
-```
-Give examples
-```
+Ensure the `db.properties` file located at `src/main/resources` matches the correct url and password for the desired database instance that is to be interacted with.
 
-### Installing
+eg. `jdbc:mysql://localhost:3306/ims`
 
-A step by step series of examples that tell you how to get a development env running
+`initialdb.properties` should contain the exact same url but without the name of the database to be created, this is to ensure the correct database is created if it does not already exist.
 
-Say what the step will be
+eg. `jdbc:mysql://localhost:3306/`
 
-```
-Give the example
-```
+### Running the system
 
-And repeat
+From the command line navigate to the root folder of the cloned git repository.
 
-```
-until finished
+Next, run the following command:
+
+```shell
+java -jar ims-0.0.1-jar-with-dependencies.jar
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Once the system is running from the Command-Line Interface an end-user will be prompted to choose their access level.		
 
-## Running the tests
+An **administrator** is able to access CRUD functionality for all 3 entities. The password for the administrator access level is `root`.	
 
-Explain how to run the automated tests for this system. Break down into which tests and what they do
+
+A **customer** is able to choose from a list of options:  
+
+
+   **A.** Change their customer information.	
+
+   **B.** View all available items.	
+
+   **C.** View their orders.	
+
+   **D.** Create an order.	
+
+   **E.** Update one of their orders.	
+
+   **F.** Delete an order.	
+
+## Testing
 
 ### Unit Tests 
 
-Explain what these tests test, why and how to run them
+Unit testing is done through JUnit and Mockito.	
 
+The system is broadly based on the Data-Access-Object (DAO) Pattern, a structural pattern used to isolate the business layer from the persistence layer. This model has the general form of:	
+
+* Controller
+* Service
+* Data Access
+
+Unit testing is done in accordance with this model. So we have three general groups of unit tests:
+
+* Controlllers
+* Domain
+* DAO
+
+The interactions between groups are mocked using Mockito.
+
+An example of a unit test for the Order Controller method:
+
+```java
+@Mock
+private OrderDAO orderDAO;
+	
+@InjectMocks
+private OrderController orderController;
+
+@Test
+public void testReadAll() {
+	List<Order> orders = new ArrayList<>();
+	orders.add(new Order(1L, 1L, 25.73, "03/07/21"));
+	Mockito.when(orderDAO.readAll()).thenReturn(orders);
+
+	assertEquals(orders, this.orderController.readAll());
+
+	Mockito.verify(this.orderDAO, Mockito.times(1)).readAll();
+}
 ```
-Give an example
-```
 
-### Integration Tests 
-Explain what these tests test, why and how to run them
+### Coding Style Tests
 
-```
-Give an example
-```
+Static code analysis is conducted through Sonarqube. 
 
-### And coding style tests
+To run the static code analysis, install Sonarqube, then navigate to the `src` folder and run the following command:
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+` mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin`
 
 ## Built With
 
@@ -75,15 +109,10 @@ We use [SemVer](http://semver.org/) for versioning.
 ## Authors
 
 * **Chris Perrins** - *Initial work* - [christophperrins](https://github.com/christophperrins)
+* **JHarry444** - *Starter* - [JHarry444](https://github.com/JHarry444)
 
 ## License
 
 This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md) file for details 
 
-*For help in [Choosing a license](https://choosealicense.com/)*
 
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Utils {
-	
+
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final Scanner scanner;
@@ -35,7 +35,9 @@ public class Utils {
 	}
 
 	public String getString() {
-		return scanner.nextLine();
+		String stringInput = scanner.nextLine();
+		PrintUtils.printLine();
+		return stringInput;
 	}
 
 	public Double getDouble() {
@@ -51,5 +53,24 @@ public class Utils {
 		} while (doubleInput == null);
 		return doubleInput;
 	}
-
+	
+	public String getDate() {
+		Long Day = (long) 0;
+		Long Month = (long) 0;
+		Long Year = (long) 0;
+		do {
+			try {
+				PrintUtils.printDottedLine();
+				LOGGER.info("Please enter the day (dd)");
+				Day = getLong();
+				LOGGER.info("Please enter the month (mm)");
+				Month = getLong();
+				LOGGER.info("Please enter the year (yy)");
+				Year = getLong();
+			} catch (NumberFormatException nfe) {
+				LOGGER.info("Invalid input - Please enter again");
+			}
+		} while (Day == 0 || Month == 0 || Year == 0 || (Day>31 || Day<1) || (Month>12 || Month<1) || (Year<21));
+		return Day+"/"+Month+"/"+Year;
+	}
 }

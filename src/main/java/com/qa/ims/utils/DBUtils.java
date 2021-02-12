@@ -72,7 +72,9 @@ public class DBUtils {
 	public Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 	}
-
+	public void closeConnection() throws SQLException{
+		DriverManager.getConnection(dbUrl, dbUser, dbPassword).close();
+	}
 	private static DBUtils instance;
 
 	public static DBUtils connect() {
