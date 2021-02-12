@@ -11,7 +11,7 @@ Either clone this repository or download the source code.
 
 Up-to-date version of Java installed on end-user's machine.	
 
-Ensure the `db.properties` file located at `src/main/resources` contains the correct url and password for the desired database instance that is to be interacted with. `initialdb.properties` should contain the exact same url but without the name of the database to be created, this is to ensure the correct tables are created if they do not already exist.
+Ensure the `db.properties` file located at `src/main/resources` contains the correct url and password for the desired database instance that is to be interacted with. `initialdb.properties` should contain the exact same url but without the name of the database to be created, this is to ensure the correct database is created if it does not already exist.
 
 ### Running the system
 
