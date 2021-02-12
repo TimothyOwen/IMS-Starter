@@ -67,7 +67,7 @@ Unit testing is done in accordance with this model. So we have three general gro
 * Domain
 * DAO
 
-The interaction between groups is mocked using Mockito.
+The interactions between groups are mocked using Mockito.
 
 An example of a unit test for the Order Controller method:
 
