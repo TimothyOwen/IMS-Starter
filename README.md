@@ -23,12 +23,6 @@ eg. `jdbc:mysql://localhost:3306/`
 
 From the command line navigate to the root folder of the cloned git repository.
 
-First run the maven command:
-
-```shell
-mvn clean package
-```
-
 Next, run the following command:
 
 ```shell
@@ -73,7 +67,7 @@ Unit testing is done in accordance with this model. So we have three general gro
 * Domain
 * DAO
 
-The interaction between groups is mocked using Mockito.
+The interactions between groups are mocked using Mockito.
 
 An example of a unit test for the Order Controller method:
 
