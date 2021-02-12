@@ -17,6 +17,12 @@ Ensure the `db.properties` file located at `src/main/resources` contains the cor
 
 From the command line navigate to the root folder of the cloned git repository.
 
+First run the maven command:
+
+```shell
+mvn clean package
+```
+
 Next, run the following command:
 
 ```shell
