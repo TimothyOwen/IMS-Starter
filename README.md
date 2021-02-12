@@ -19,6 +19,8 @@ eg. `jdbc:mysql://localhost:3306/ims`
 
 eg. `jdbc:mysql://localhost:3306/`
 
+Changing the database instance will mean the application will need to be repackaged with the Maven command `mvn clean package`.
+
 ### Running the system
 
 From the command line navigate to the root folder of the cloned git repository.
