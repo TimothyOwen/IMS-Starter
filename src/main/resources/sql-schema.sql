@@ -40,5 +40,3 @@ ALTER TABLE `ims`.`orders` ADD FOREIGN KEY (`customer_id`) REFERENCES `ims`.`cus
 ALTER TABLE `ims`.`orders_items` ADD FOREIGN KEY (`order_id`) REFERENCES `ims`.`orders` (`order_id`);
 ALTER TABLE `ims`.`orders_items` ADD FOREIGN KEY (`item_id`) REFERENCES `ims`.`items` (`item_id`);
 
-INSERT INTO `ims`.`customers` (`first_name`, `surname`) VALUES ('Boris', 'Harrison'),('Jim', 'Harrison'),('Jones', 'Mcgee'),('Steven', 'Redgrave'),('Willy', 'Bower');
-INSERT INTO `ims`.`items` (`item_name`, `price`) VALUES ('Beer', 1.99),('Sprite', 1.99),('Coca Cola', 5.03),('Vodka', 1.99),('Wine', 2.01);

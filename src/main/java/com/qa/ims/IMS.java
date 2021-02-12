@@ -45,6 +45,7 @@ public class IMS {
 		PrintUtils.printDottedLine();
 		DBUtils db = DBUtils.connect("initialdb.properties");
 		db.init("src/main/resources/sql-schema.sql");
+		db.init("src/main/resources/sql-data.sql");
 		DBUtils.connect();
 		Access access = null;
 		do {
