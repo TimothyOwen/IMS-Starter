@@ -36,7 +36,7 @@ Once the system is running from the Command-Line Interface an end-user will be p
 An **administrator** is able to access CRUD functionality for all 3 entities. The password for the administrator access level is `root`.	
 
 
-A **customer** is able to choose from a list of options:  
+A **customer** is able to choose from a list of options:      
 
 
    **A.** Change their customer information.	
